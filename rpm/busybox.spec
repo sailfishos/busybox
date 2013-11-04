@@ -4,7 +4,7 @@ Version: 1.21.0
 Release: 1
 License: GPLv2
 Group: System/Shells
-Source: http://www.busybox.net/downloads/%{name}-%{version}.tar.bz2
+Source: https://github.com/mer-packages/busybox
 URL: http://www.busybox.net
 
 %define debug_package %{nil}
@@ -60,9 +60,11 @@ applets/install.sh %{buildroot} --symlinks
 /bin/busybox
 
 %files docs
+%defattr(-,root,root,-)
 %doc LICENSE docs/busybox.net/*.html
 
 %files symlinks-gzip
+%defattr(-,root,root,-)
 /bin/gunzip
 /usr/bin/gunzip
 /bin/gzip
