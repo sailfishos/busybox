@@ -4,8 +4,8 @@ Version: 1.21.0
 Release: 1
 License: GPLv2
 Group: System/Shells
-Source: https://github.com/mer-packages/busybox
-URL: http://www.busybox.net
+Source: http://www.busybox.net/downloads/%{name}-%{version}.tar.bz2
+URL: https://github.com/mer-packages/busybox 
 
 %define debug_package %{nil}
 
