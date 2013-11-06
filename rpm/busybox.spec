@@ -23,7 +23,8 @@ particularly those involving broken shared libraries.
 Requires: %{name}
 Group: System/Shells
 Summary: Busybox replacements for gzip
-Provides: gzip
+Provides: gzip = %{version}
+Obsoletes: gzip <= 1.5
 
 %description symlinks-gzip
 Busybox is a single binary which includes versions of a large number
