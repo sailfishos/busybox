@@ -33,6 +33,18 @@ useful for recovering from certain types of system failures,
 particularly those involving broken shared libraries. This
 is the symlinks implementing gzip replacements.
 
+%package symlinks-dhcp
+Requires: %{name}
+Group: System/Shells
+Summary: Busybox dhcp utilities
+
+%description symlinks-dhcp
+Busybox is a single binary which includes versions of a large number
+of system commands, including a shell.  This package can be very
+useful for recovering from certain types of system failures,
+particularly those involving broken shared libraries. This contains
+the symlinks implementing the dhcp utilities (udhcpc/udhcpcd).
+
 %description docs
 Busybox documentation and user guides
 
@@ -47,6 +59,7 @@ make busybox.links
 cat >> busybox.links << EOF
 /usr/bin/gzip
 /usr/bin/gunzip
+/usr/sbin/udhcpc
 EOF
 
 %install
@@ -71,3 +84,9 @@ applets/install.sh %{buildroot} --symlinks
 /bin/gzip
 /usr/bin/gzip
 /bin/zcat
+
+%files symlinks-dhcp
+%defattr(-,root,root,-)
+/sbin/udhcpc
+/usr/sbin/udhcpc
+/usr/sbin/udhcpd
