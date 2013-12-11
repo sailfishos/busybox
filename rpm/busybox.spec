@@ -69,6 +69,7 @@ mkdir -p %{buildroot}/bin
 install -m 755 busybox %{buildroot}/bin/busybox
 install -m 644 -D %{SOURCE1} %{buildroot}/lib/systemd/system/udhcpd.service
 applets/install.sh %{buildroot} --symlinks
+rm -f %{buildroot}/sbin/udhcpc
 
 %files
 %defattr(-,root,root,-)
@@ -89,7 +90,6 @@ applets/install.sh %{buildroot} --symlinks
 
 %files symlinks-dhcp
 %defattr(-,root,root,-)
-/sbin/udhcpc
 /usr/sbin/udhcpc
 /usr/sbin/udhcpd
 /lib/systemd/system/udhcpd.service
