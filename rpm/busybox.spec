@@ -5,6 +5,7 @@ Release: 1
 License: GPLv2
 Group: System/Shells
 Source: http://www.busybox.net/downloads/%{name}-%{version}.tar.bz2
+Source1: rpm/udhcpd.service
 URL: https://github.com/mer-packages/busybox 
 
 %define debug_package %{nil}
@@ -66,6 +67,7 @@ EOF
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/bin
 install -m 755 busybox %{buildroot}/bin/busybox
+install -m 644 -D %{SOURCE1} %{buildroot}/lib/systemd/system/udhcpd.service
 applets/install.sh %{buildroot} --symlinks
 
 %files
@@ -90,3 +92,4 @@ applets/install.sh %{buildroot} --symlinks
 /sbin/udhcpc
 /usr/sbin/udhcpc
 /usr/sbin/udhcpd
+/lib/systemd/system/udhcpd.service
