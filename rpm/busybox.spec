@@ -4,9 +4,12 @@ Version: 1.21.0
 Release: 1
 License: GPLv2
 Group: System/Shells
-Source: http://www.busybox.net/downloads/%{name}-%{version}.tar.bz2
+Source0: http://www.busybox.net/downloads/%{name}-%{version}.tar.bz2
 Source1: rpm/udhcpd.service
+Source2: busybox-static.config
 URL: https://github.com/mer-packages/busybox 
+
+BuildRequires: glibc-static
 
 %define debug_package %{nil}
 
@@ -19,6 +22,17 @@ Busybox is a single binary which includes versions of a large number
 of system commands, including a shell.  This package can be very
 useful for recovering from certain types of system failures,
 particularly those involving broken shared libraries.
+
+%package static
+Group: System Environment/Shells
+Summary: Statically linked version of busybox
+
+%description static
+Busybox is a single binary which includes versions of a large number
+of system commands, including a shell.  This package can be very
+useful for recovering from certain types of system failures,
+particularly those involving broken shared libraries. This package provides
+a statically linked version of Busybox.
 
 %package symlinks-gzip
 Requires: %{name}
@@ -53,6 +67,18 @@ Busybox documentation and user guides
 %setup -q -n %{name}-%{version}/%{name}
 
 %build
+# TODO: This config should be synced with the dynamic config at some point
+# currently the features differ quite a bit
+cp %{SOURCE2} .config
+yes "" | make oldconfig
+make %{?jobs:-j%jobs}
+cp busybox busybox-static
+
+# clean any leftovers from static build
+make clean
+make distclean
+
+# Build dynamic version
 cp busybox-sailfish.config .config
 yes "" | make oldconfig
 make %{_smp_mflags}
@@ -71,10 +97,16 @@ install -m 644 -D %{SOURCE1} %{buildroot}/lib/systemd/system/udhcpd.service
 applets/install.sh %{buildroot} --symlinks
 rm -f %{buildroot}/sbin/udhcpc
 
+install -m 755 busybox-static %{buildroot}/bin/busybox-static
+
 %files
 %defattr(-,root,root,-)
 %doc LICENSE
 /bin/busybox
+
+%files static
+%defattr(-,root,root,-)
+/bin/busybox-static
 
 %files docs
 %defattr(-,root,root,-)
