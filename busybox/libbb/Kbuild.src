@@ -172,6 +172,7 @@ lib-$(CONFIG_TRACEROUTE6) += inet_cksum.o
 lib-$(CONFIG_UDHCPC) += inet_cksum.o
 lib-$(CONFIG_UDHCPC6) += inet_cksum.o
 lib-$(CONFIG_UDHCPD) += inet_cksum.o
+lib-$(CONFIG_XATTR) += copy_file_attr.o
 
 # We shouldn't build xregcomp.c if we don't need it - this ensures we don't
 # require regex.h to be in the include dir even if we don't need it thereby

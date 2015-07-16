@@ -342,6 +342,9 @@ extern int remove_file(const char *path, int flags) FAST_FUNC;
  * This makes "cp /dev/null file" and "install /dev/null file" (!!!)
  * work coreutils-compatibly. */
 extern int copy_file(const char *source, const char *dest, int flags) FAST_FUNC;
+#if ENABLE_XATTR
+extern int copy_file_attr(const char *src_path, const char *dst_path) FAST_FUNC;
+#endif
 
 enum {
 	ACTION_RECURSE        = (1 << 0),

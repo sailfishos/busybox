@@ -314,6 +314,7 @@ int FAST_FUNC copy_file(const char *source, const char *dest, int flags)
 			}
 		}
 #endif
+
 		if (bb_copyfd_eof(src_fd, dst_fd) == -1)
 			retval = -1;
 		/* Careful with writing... */
@@ -385,6 +386,13 @@ int FAST_FUNC copy_file(const char *source, const char *dest, int flags)
 			source_stat.st_mode &= ~(S_ISUID | S_ISGID);
 			bb_perror_msg("can't preserve %s of '%s'", "ownership", dest);
 		}
+#if ENABLE_XATTR
+		/* Preserve extended attributes. We must copy it after chown()
+		 * because it resets capabilities. */
+		if (copy_file_attr(source, dest) == -1)
+			bb_perror_msg("can't preserve %s of '%s'",
+				      "extended attributes", dest);
+#endif
 		if (chmod(dest, source_stat.st_mode) < 0)
 			bb_perror_msg("can't preserve %s of '%s'", "permissions", dest);
 	}
