@@ -232,4 +232,10 @@ config FEATURE_HWIB
 	  Support for printing infiniband addresses in
 	  network applets.
 
+config XATTR
+	bool "Support preserve extended attributes for cp command"
+	default y
+	help
+	  Support preserve extended attributes for cp and mv command.
+
 endmenu
