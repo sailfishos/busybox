@@ -9,6 +9,12 @@ Source1: rpm/udhcpd.service
 Source2: busybox-static.config
 URL: https://github.com/mer-packages/busybox 
 
+Obsoletes: time <= 1.7
+Provides: time > 1.7
+
+Obsoletes: iputils <= 20101006
+Provides: iputils > 20101006
+
 BuildRequires: glibc-static
 
 %define debug_package %{nil}
@@ -103,6 +109,14 @@ install -m 755 busybox-static %{buildroot}/bin/busybox-static
 %defattr(-,root,root,-)
 %doc LICENSE
 /bin/busybox
+/bin/ping
+/bin/ping6
+/sbin/mkdosfs
+/sbin/mkfs.vfat
+/usr/bin/time
+/usr/bin/traceroute
+/usr/bin/traceroute6
+/usr/sbin/arping
 
 %files static
 %defattr(-,root,root,-)
