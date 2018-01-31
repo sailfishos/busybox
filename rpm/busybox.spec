@@ -12,6 +12,7 @@ URL: https://github.com/mer-packages/busybox
 Obsoletes: time <= 1.7
 Provides: time > 1.7
 
+# Providing only part of iputils, but should be enough for us. 
 Obsoletes: iputils <= 20101006
 Provides: iputils > 20101006
 
@@ -39,6 +40,18 @@ of system commands, including a shell.  This package can be very
 useful for recovering from certain types of system failures,
 particularly those involving broken shared libraries. This package provides
 a statically linked version of Busybox.
+
+%package symlinks-dosfstools
+Requires: %{name}
+Group: System/Shells
+Summary: Busybox replacements for dosfstools
+
+%description symlinks-dosfstools
+Busybox is a single binary which includes versions of a large number
+of system commands, including a shell.  This package can be very
+useful for recovering from certain types of system failures,
+particularly those involving broken shared libraries. This
+is the symlinks implementing part of dosfstools.
 
 %package symlinks-gzip
 Requires: %{name}
@@ -111,8 +124,6 @@ install -m 755 busybox-static %{buildroot}/bin/busybox-static
 /bin/busybox
 /bin/ping
 /bin/ping6
-/sbin/mkdosfs
-/sbin/mkfs.vfat
 /usr/bin/time
 /usr/bin/traceroute
 /usr/bin/traceroute6
@@ -125,6 +136,11 @@ install -m 755 busybox-static %{buildroot}/bin/busybox-static
 %files docs
 %defattr(-,root,root,-)
 %doc LICENSE docs/busybox.net/*.html
+
+%files symlinks-dosfstools
+%defattr(-,root,root,-)
+/sbin/mkdosfs
+/sbin/mkfs.vfat
 
 %files symlinks-gzip
 %defattr(-,root,root,-)
