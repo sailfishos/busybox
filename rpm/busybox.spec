@@ -79,6 +79,48 @@ useful for recovering from certain types of system failures,
 particularly those involving broken shared libraries. This contains
 the symlinks implementing the dhcp utilities (udhcpc/udhcpcd).
 
+%package symlinks-diffutils
+Requires: %{name}
+Group: System/Shells
+Summary: Busybox replacements for diffutils
+Provides: diffutils = %{version}
+Obsoletes: diffutils <= 2.8.1
+
+%description symlinks-diffutils
+Busybox is a single binary which includes versions of a large number
+of system commands, including a shell.  This package can be very
+useful for recovering from certain types of system failures,
+particularly those involving broken shared libraries. This
+is the symlinks implementing part of diffutils replacements.
+
+%package symlinks-findutils
+Requires: %{name}
+Group: System/Shells
+Summary: Busybox replacements for findutils
+Provides: findutils = %{version}
+Obsoletes: findutils <= 4.2.31
+
+%description symlinks-findutils
+Busybox is a single binary which includes versions of a large number
+of system commands, including a shell.  This package can be very
+useful for recovering from certain types of system failures,
+particularly those involving broken shared libraries. This
+is the symlinks implementing findutils replacements.
+
+%package symlinks-grep
+Requires: %{name}
+Group: System/Shells
+Summary: Busybox replacements for grep
+Provides: grep = %{version}
+Obsoletes: grep <= 2.5.1a
+
+%description symlinks-grep
+Busybox is a single binary which includes versions of a large number
+of system commands, including a shell.  This package can be very
+useful for recovering from certain types of system failures,
+particularly those involving broken shared libraries. This
+is the symlinks implementing grep, egrep and fgrep replacements.
+
 %description docs
 Busybox documentation and user guides
 
@@ -106,6 +148,7 @@ cat >> busybox.links << EOF
 /usr/bin/gzip
 /usr/bin/gunzip
 /usr/sbin/udhcpc
+/bin/find
 EOF
 
 %install
@@ -155,3 +198,20 @@ install -m 755 busybox-static %{buildroot}/bin/busybox-static
 /usr/sbin/udhcpc
 /usr/sbin/udhcpd
 /lib/systemd/system/udhcpd.service
+
+%files symlinks-diffutils
+%defattr(-,root,root,-)
+/usr/bin/diff
+/usr/bin/cmp
+
+%files symlinks-findutils
+%defattr(-,root,root,-)
+/bin/find
+/usr/bin/find
+/usr/bin/xargs
+
+%files symlinks-grep
+%defattr(-,root,root,-)
+/bin/grep
+/bin/egrep
+/bin/fgrep
