@@ -1,12 +1,14 @@
 Summary: Single binary providing simplified versions of system commands
 Name: busybox
-Version: 1.21.0
+Version: 1.29.3
 Release: 1
 License: GPLv2
 Group: System/Shells
 Source0: http://www.busybox.net/downloads/%{name}-%{version}.tar.bz2
 Source1: rpm/udhcpd.service
 Source2: busybox-static.config
+Source3: busybox-sailfish.config
+Patch0:  0001-Copy-extended-attributes-if-p-flag-is-provided-to-cp.patch
 URL: https://github.com/mer-packages/busybox 
 
 Obsoletes: time <= 1.7
@@ -79,11 +81,54 @@ useful for recovering from certain types of system failures,
 particularly those involving broken shared libraries. This contains
 the symlinks implementing the dhcp utilities (udhcpc/udhcpcd).
 
+%package symlinks-diffutils
+Requires: %{name}
+Group: System/Shells
+Summary: Busybox replacements for diffutils
+Provides: diffutils = %{version}
+Obsoletes: diffutils <= 2.8.1
+
+%description symlinks-diffutils
+Busybox is a single binary which includes versions of a large number
+of system commands, including a shell.  This package can be very
+useful for recovering from certain types of system failures,
+particularly those involving broken shared libraries. This
+is the symlinks implementing part of diffutils replacements.
+
+%package symlinks-findutils
+Requires: %{name}
+Group: System/Shells
+Summary: Busybox replacements for findutils
+Provides: findutils = %{version}
+Obsoletes: findutils <= 4.2.31
+
+%description symlinks-findutils
+Busybox is a single binary which includes versions of a large number
+of system commands, including a shell.  This package can be very
+useful for recovering from certain types of system failures,
+particularly those involving broken shared libraries. This
+is the symlinks implementing findutils replacements.
+
+%package symlinks-grep
+Requires: %{name}
+Group: System/Shells
+Summary: Busybox replacements for grep
+Provides: grep = %{version}
+Obsoletes: grep <= 2.5.1a
+
+%description symlinks-grep
+Busybox is a single binary which includes versions of a large number
+of system commands, including a shell.  This package can be very
+useful for recovering from certain types of system failures,
+particularly those involving broken shared libraries. This
+is the symlinks implementing grep, egrep and fgrep replacements.
+
 %description docs
 Busybox documentation and user guides
 
 %prep
-%setup -q -n %{name}-%{version}/%{name}
+%setup -q -n %{name}-%{version}/upstream
+%patch0 -p1
 
 %build
 # TODO: This config should be synced with the dynamic config at some point
@@ -98,7 +143,7 @@ make clean
 make distclean
 
 # Build dynamic version
-cp busybox-sailfish.config .config
+cp %{SOURCE3} .config
 yes "" | make oldconfig
 make %{_smp_mflags}
 make busybox.links
@@ -106,6 +151,7 @@ cat >> busybox.links << EOF
 /usr/bin/gzip
 /usr/bin/gunzip
 /usr/sbin/udhcpc
+/bin/find
 EOF
 
 %install
@@ -155,3 +201,20 @@ install -m 755 busybox-static %{buildroot}/bin/busybox-static
 /usr/sbin/udhcpc
 /usr/sbin/udhcpd
 /lib/systemd/system/udhcpd.service
+
+%files symlinks-diffutils
+%defattr(-,root,root,-)
+/usr/bin/diff
+/usr/bin/cmp
+
+%files symlinks-findutils
+%defattr(-,root,root,-)
+/bin/find
+/usr/bin/find
+/usr/bin/xargs
+
+%files symlinks-grep
+%defattr(-,root,root,-)
+/bin/grep
+/bin/egrep
+/bin/fgrep
