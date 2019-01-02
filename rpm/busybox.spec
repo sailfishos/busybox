@@ -22,15 +22,20 @@ BuildRequires: glibc-static
 
 %define debug_package %{nil}
 
-%package docs
-Group: Documentation
-Summary: Busybox Documentation
-
 %description
 Busybox is a single binary which includes versions of a large number
 of system commands, including a shell.  This package can be very
 useful for recovering from certain types of system failures,
 particularly those involving broken shared libraries.
+
+%package doc
+Summary: Documentation for %{name}
+Group: Documentation
+Requires: %{name} = %{version}-%{release}
+Obsoletes: %{name}-docs
+
+%description doc
+Busybox user guide.
 
 %package static
 Group: System Environment/Shells
@@ -123,9 +128,6 @@ useful for recovering from certain types of system failures,
 particularly those involving broken shared libraries. This
 is the symlinks implementing grep, egrep and fgrep replacements.
 
-%description docs
-Busybox documentation and user guides
-
 %prep
 %setup -q -n %{name}-%{version}/upstream
 %patch0 -p1
@@ -163,10 +165,13 @@ applets/install.sh %{buildroot} --symlinks
 rm -f %{buildroot}/sbin/udhcpc
 
 install -m 755 busybox-static %{buildroot}/bin/busybox-static
+mkdir -p %{buildroot}/%{_docdir}/%{name}-%{version}
+install -m 644 -t %{buildroot}/%{_docdir}/%{name}-%{version} \
+	docs/BusyBox.html docs/BusyBox.txt
 
 %files
 %defattr(-,root,root,-)
-%doc LICENSE
+%license LICENSE
 /bin/busybox
 /bin/ping
 /bin/ping6
@@ -179,9 +184,9 @@ install -m 755 busybox-static %{buildroot}/bin/busybox-static
 %defattr(-,root,root,-)
 /bin/busybox-static
 
-%files docs
+%files doc
 %defattr(-,root,root,-)
-%doc LICENSE docs/busybox.net/*.html
+%doc %{_docdir}/%{name}-%{version}
 
 %files symlinks-dosfstools
 %defattr(-,root,root,-)
