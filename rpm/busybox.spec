@@ -44,7 +44,7 @@ particularly those involving broken shared libraries. This package provides
 a statically linked version of Busybox.
 
 %package symlinks-dosfstools
-Requires: %{name}
+Requires: %{name} = %{version}-%{release}
 Group: System/Shells
 Summary: Busybox replacements for dosfstools
 
@@ -56,7 +56,7 @@ particularly those involving broken shared libraries. This
 is the symlinks implementing part of dosfstools.
 
 %package symlinks-gzip
-Requires: %{name}
+Requires: %{name} = %{version}-%{release}
 Group: System/Shells
 Summary: Busybox replacements for gzip
 Provides: gzip = %{version}
@@ -70,7 +70,7 @@ particularly those involving broken shared libraries. This
 is the symlinks implementing gzip replacements.
 
 %package symlinks-dhcp
-Requires: %{name}
+Requires: %{name} = %{version}-%{release}
 Group: System/Shells
 Summary: Busybox dhcp utilities
 
@@ -82,7 +82,7 @@ particularly those involving broken shared libraries. This contains
 the symlinks implementing the dhcp utilities (udhcpc/udhcpcd).
 
 %package symlinks-diffutils
-Requires: %{name}
+Requires: %{name} = %{version}-%{release}
 Group: System/Shells
 Summary: Busybox replacements for diffutils
 Provides: diffutils = %{version}
@@ -96,7 +96,7 @@ particularly those involving broken shared libraries. This
 is the symlinks implementing part of diffutils replacements.
 
 %package symlinks-findutils
-Requires: %{name}
+Requires: %{name} = %{version}-%{release}
 Group: System/Shells
 Summary: Busybox replacements for findutils
 Provides: findutils = %{version}
@@ -110,7 +110,7 @@ particularly those involving broken shared libraries. This
 is the symlinks implementing findutils replacements.
 
 %package symlinks-grep
-Requires: %{name}
+Requires: %{name} = %{version}-%{release}
 Group: System/Shells
 Summary: Busybox replacements for grep
 Provides: grep = %{version}
