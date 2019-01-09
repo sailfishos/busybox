@@ -91,7 +91,7 @@ Requires: %{name} = %{version}-%{release}
 Group: System/Shells
 Summary: Busybox replacements for diffutils
 Provides: diffutils = %{version}
-Obsoletes: diffutils <= 2.8.1
+Conflicts: gnu-diffutils
 
 %description symlinks-diffutils
 Busybox is a single binary which includes versions of a large number
@@ -105,7 +105,7 @@ Requires: %{name} = %{version}-%{release}
 Group: System/Shells
 Summary: Busybox replacements for findutils
 Provides: findutils = %{version}
-Obsoletes: findutils <= 4.2.31
+Conflicts: gnu-findutils
 
 %description symlinks-findutils
 Busybox is a single binary which includes versions of a large number
@@ -119,7 +119,8 @@ Requires: %{name} = %{version}-%{release}
 Group: System/Shells
 Summary: Busybox replacements for grep
 Provides: grep = %{version}
-Obsoletes: grep <= 2.5.1a
+Provides: /bin/grep
+Conflicts: gnu-grep
 
 %description symlinks-grep
 Busybox is a single binary which includes versions of a large number
