@@ -180,12 +180,12 @@ yes "" | make oldconfig
 make %{_smp_mflags}
 make busybox.links
 cat >> busybox.links << EOF
-/usr/bin/gzip
-/usr/bin/gunzip
+%{_bindir}/gzip
+%{_bindir}/gunzip
 /usr/sbin/udhcpc
 /bin/find
-/usr/bin/cpio
-/usr/bin/tar
+%{_bindir}/cpio
+%{_bindir}/tar
 EOF
 
 %install
@@ -207,9 +207,9 @@ install -m 644 -t %{buildroot}/%{_docdir}/%{name}-%{version} \
 /bin/busybox
 /bin/ping
 /bin/ping6
-/usr/bin/time
-/usr/bin/traceroute
-/usr/bin/traceroute6
+%{_bindir}/time
+%{_bindir}/traceroute
+%{_bindir}/traceroute6
 /usr/sbin/arping
 
 %files static
@@ -228,9 +228,9 @@ install -m 644 -t %{buildroot}/%{_docdir}/%{name}-%{version} \
 %files symlinks-gzip
 %defattr(-,root,root,-)
 /bin/gunzip
-/usr/bin/gunzip
+%{_bindir}/gunzip
 /bin/gzip
-/usr/bin/gzip
+%{_bindir}/gzip
 /bin/zcat
 
 %files symlinks-dhcp
@@ -241,14 +241,14 @@ install -m 644 -t %{buildroot}/%{_docdir}/%{name}-%{version} \
 
 %files symlinks-diffutils
 %defattr(-,root,root,-)
-/usr/bin/diff
-/usr/bin/cmp
+%{_bindir}/diff
+%{_bindir}/cmp
 
 %files symlinks-findutils
 %defattr(-,root,root,-)
 /bin/find
-/usr/bin/find
-/usr/bin/xargs
+%{_bindir}/find
+%{_bindir}/xargs
 
 %files symlinks-grep
 %defattr(-,root,root,-)
@@ -258,10 +258,10 @@ install -m 644 -t %{buildroot}/%{_docdir}/%{name}-%{version} \
 
 %files symlinks-cpio
 %defattr(-,root,root,-)
-/usr/bin/cpio
+%{_bindir}/cpio
 /bin/cpio
 
 %files symlinks-tar
 %defattr(-,root,root,-)
-/usr/bin/tar
+%{_bindir}/tar
 /bin/tar
