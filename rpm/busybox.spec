@@ -143,6 +143,20 @@ useful for recovering from certain types of system failures,
 particularly those involving broken shared libraries. This contains
 the symlinks implementing cpio replacements.
 
+%package symlinks-tar
+Requires: %{name} = %{version}-%{release}
+Group: System/Shells
+Summary: Busybox replacements for tar
+Provides: tar = %{version}
+Conflicts: gnu-tar
+
+%description symlinks-tar
+Busybox is a single binary which includes versions of a large number
+of system commands, including a shell.  This package can be very
+useful for recovering from certain types of system failures,
+particularly those involving broken shared libraries. This
+is the symlink implementing tar replacement.
+
 %prep
 %setup -q -n %{name}-%{version}/upstream
 %patch0 -p1
@@ -152,7 +166,7 @@ the symlinks implementing cpio replacements.
 # currently the features differ quite a bit
 cp %{SOURCE2} .config
 yes "" | make oldconfig
-make %{?jobs:-j%jobs}
+make %{?_smp_mflags}
 cp busybox busybox-static
 
 # clean any leftovers from static build
@@ -171,6 +185,7 @@ cat >> busybox.links << EOF
 /usr/sbin/udhcpc
 /bin/find
 /usr/bin/cpio
+/usr/bin/tar
 EOF
 
 %install
@@ -245,3 +260,8 @@ install -m 644 -t %{buildroot}/%{_docdir}/%{name}-%{version} \
 %defattr(-,root,root,-)
 /usr/bin/cpio
 /bin/cpio
+
+%files symlinks-tar
+%defattr(-,root,root,-)
+/usr/bin/tar
+/bin/tar
