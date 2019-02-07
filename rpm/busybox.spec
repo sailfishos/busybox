@@ -157,6 +157,20 @@ useful for recovering from certain types of system failures,
 particularly those involving broken shared libraries. This
 is the symlink implementing tar replacement.
 
+%package symlinks-which
+Requires: %{name} = %{version}-%{release}
+Group: System/Shells
+Summary: Busybox replacements for which
+Provides: which = %{version}
+Conflicts: util-linux <= 2.33+git1
+
+%description symlinks-which
+Busybox is a single binary which includes versions of a large number
+of system commands, including a shell.  This package can be very
+useful for recovering from certain types of system failures,
+particularly those involving broken shared libraries. This
+is the symlink implementing which replacement.
+
 %prep
 %setup -q -n %{name}-%{version}/upstream
 %patch0 -p1
@@ -265,3 +279,7 @@ install -m 644 -t %{buildroot}/%{_docdir}/%{name}-%{version} \
 %defattr(-,root,root,-)
 %{_bindir}/tar
 /bin/tar
+
+%files symlinks-which
+%defattr(-,root,root,-)
+%{_bindir}/which
