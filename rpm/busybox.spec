@@ -119,7 +119,6 @@ Requires: %{name} = %{version}-%{release}
 Group: System/Shells
 Summary: Busybox replacements for grep
 Provides: grep = %{version}
-Provides: /bin/grep
 Conflicts: gnu-grep
 
 %description symlinks-grep
