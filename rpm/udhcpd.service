@@ -6,3 +6,9 @@ Conflicts=shutdown.target
 
 [Service]
 ExecStart=/usr/sbin/udhcpd -f
+# Sandboxing
+CapabilityBoundingSet=CAP_DAC_READ_SEARCH CAP_NET_BIND_SERVICE CAP_NET_RAW
+PrivateDevices=yes
+PrivateTmp=yes
+ProtectHome=yes
+ProtectSystem=full
