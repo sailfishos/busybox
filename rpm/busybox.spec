@@ -129,6 +129,20 @@ useful for recovering from certain types of system failures,
 particularly those involving broken shared libraries. This
 is the symlinks implementing grep, egrep and fgrep replacements.
 
+%package symlinks-cpio
+Requires: %{name} = %{version}-%{release}
+Group: System/Shells
+Summary: Busybox replacements for cpio
+Provides: cpio
+Conflicts: gnu-cpio
+
+%description symlinks-cpio
+Busybox is a single binary which includes versions of a large number
+of system commands, including a shell. This package can be very
+useful for recovering from certain types of system failures,
+particularly those involving broken shared libraries. This contains
+the symlinks implementing cpio replacements.
+
 %prep
 %setup -q -n %{name}-%{version}/upstream
 %patch0 -p1
@@ -147,6 +161,7 @@ make distclean
 
 # Build dynamic version
 cp %{SOURCE3} .config
+
 yes "" | make oldconfig
 make %{_smp_mflags}
 make busybox.links
@@ -155,6 +170,7 @@ cat >> busybox.links << EOF
 /usr/bin/gunzip
 /usr/sbin/udhcpc
 /bin/find
+/usr/bin/cpio
 EOF
 
 %install
@@ -224,3 +240,8 @@ install -m 644 -t %{buildroot}/%{_docdir}/%{name}-%{version} \
 /bin/grep
 /bin/egrep
 /bin/fgrep
+
+%files symlinks-cpio
+%defattr(-,root,root,-)
+/usr/bin/cpio
+/bin/cpio
