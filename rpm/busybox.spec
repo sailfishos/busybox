@@ -1,6 +1,6 @@
 Summary: Single binary providing simplified versions of system commands
 Name: busybox
-Version: 1.29.3
+Version: 1.31.0
 Release: 1
 License: GPLv2
 Group: System/Shells
@@ -9,7 +9,7 @@ Source1: rpm/udhcpd.service
 Source2: busybox-static.config
 Source3: busybox-sailfish.config
 Patch0:  0001-Copy-extended-attributes-if-p-flag-is-provided-to-cp.patch
-URL: https://github.com/mer-packages/busybox 
+URL: https://git.sailfishos.org/mer-core/busybox
 
 Obsoletes: time <= 1.7
 Provides: time > 1.7
