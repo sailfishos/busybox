@@ -1,0 +1,77 @@
+From 473e5c4022bc0e3c793063ed5002b40fca988ee3 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Tomi=20Lepp=C3=A4nen?= <tomi.leppanen@jolla.com>
+Date: Fri, 16 Aug 2019 11:51:33 +0300
+Subject: [PATCH] applets: Busybox in /usr/bin instead of /bin
+
+---
+ applets/install.sh | 26 +++++++++++++-------------
+ 1 file changed, 13 insertions(+), 13 deletions(-)
+
+diff --git a/applets/install.sh b/applets/install.sh
+index 415896893..2b73f1a02 100755
+--- a/applets/install.sh
++++ b/applets/install.sh
+@@ -60,8 +60,8 @@ if [ -n "$DO_INSTALL_LIBS" ] && [ x"$DO_INSTALL_LIBS" != x"n" ]; then
+ 	done
+ fi
+ 
+-if [ x"$cleanup" = x"1" ] && [ -e "$prefix/bin/busybox" ]; then
+-	inode=`ls -i "$prefix/bin/busybox" | awk '{print $1}'`
++if [ x"$cleanup" = x"1" ] && [ -e "$prefix/usr/bin/busybox" ]; then
++	inode=`ls -i "$prefix/usr/bin/busybox" | awk '{print $1}'`
+ 	sub_shell_it=`
+ 		cd "$prefix"
+ 		for d in usr/sbin usr/bin sbin bin; do
+@@ -76,9 +76,9 @@ if [ x"$cleanup" = x"1" ] && [ -e "$prefix/bin/busybox" ]; then
+ 	exit 0
+ fi
+ 
+-rm -f "$prefix/bin/busybox" || exit 1
+-mkdir -p "$prefix/bin" || exit 1
+-install -m 755 busybox "$prefix/bin/busybox" || exit 1
++rm -f "$prefix/usr/bin/busybox" || exit 1
++mkdir -p "$prefix/usr/bin" || exit 1
++install -m 755 busybox "$prefix/usr/bin/busybox" || exit 1
+ 
+ for i in $h; do
+ 	appdir=`dirname "$i"`
+@@ -93,7 +93,7 @@ for i in $h; do
+ 			ln $linkopts busybox "$prefix/$i" || exit 1
+ 		else
+ 			rm -f "$prefix/$i"
+-			echo "#!/bin/busybox" >"$prefix/$i"
++			echo "#!/usr/bin/busybox" >"$prefix/$i"
+ 			chmod +x "$prefix/$i"
+ 		fi
+ 		echo "	$prefix/$i"
+@@ -108,20 +108,20 @@ for i in $h; do
+ 		fi
+ 	else
+ 		if [ x"$linkopts" = x"-f" ]; then
+-			bb_path="$prefix/bin/busybox"
++			bb_path="$prefix/usr/bin/busybox"
+ 		else
+ 			case "$appdir" in
+ 			/)
+-				bb_path="bin/busybox"
++				bb_path="usr/bin/busybox"
+ 			;;
+-			/bin)
++			/usr/bin)
+ 				bb_path="busybox"
+ 			;;
+-			/sbin)
+-				bb_path="../bin/busybox"
++			/usr/sbin)
++				bb_path="../bin/busybox"
+ 			;;
+-			/usr/bin | /usr/sbin)
+-				bb_path="../../bin/busybox"
++			/bin | /sbin)
++				bb_path="../usr/bin/busybox"
+ 			;;
+ 			*)
+ 				echo "Unknown installation directory: $appdir"
+-- 
+2.21.0
+

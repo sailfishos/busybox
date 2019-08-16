@@ -9,6 +9,7 @@ Source1: rpm/udhcpd.service
 Source2: busybox-static.config
 Source3: busybox-sailfish.config
 Patch0:  0001-Copy-extended-attributes-if-p-flag-is-provided-to-cp.patch
+Patch1:  0002-applets-Busybox-in-usr-bin-instead-of-bin.patch
 URL: https://git.sailfishos.org/mer-core/busybox
 
 Obsoletes: time <= 1.7
@@ -174,6 +175,7 @@ is the symlink implementing which replacement.
 %prep
 %setup -q -n %{name}-%{version}/upstream
 %patch0 -p1
+%patch1 -p1
 
 %build
 # TODO: This config should be synced with the dynamic config at some point
@@ -193,11 +195,21 @@ cp %{SOURCE3} .config
 yes "" | make oldconfig
 make %{_smp_mflags}
 make busybox.links
+# /bin links are legacy, use /usr/bin whenever you can
 cat >> busybox.links << EOF
+/bin/busybox
+%{_bindir}/ping
+%{_bindir}/ping6
+%{_sbindir}/mkdosfs
+%{_sbindir}/mkfs.vfat
 %{_bindir}/gzip
 %{_bindir}/gunzip
-/usr/sbin/udhcpc
+%{_bindir}/zcat
+%{_sbindir}/udhcpc
 /bin/find
+%{_bindir}/grep
+%{_bindir}/egrep
+%{_bindir}/fgrep
 %{_bindir}/cpio
 %{_bindir}/tar
 EOF
@@ -205,30 +217,36 @@ EOF
 %install
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/bin
-install -m 755 busybox %{buildroot}/bin/busybox
+mkdir -p %{buildroot}/usr/bin
+install -m 755 busybox %{buildroot}/usr/bin/busybox
 install -m 644 -D %{SOURCE1} %{buildroot}/lib/systemd/system/udhcpd.service
 applets/install.sh %{buildroot} --symlinks
 rm -f %{buildroot}/sbin/udhcpc
 
-install -m 755 busybox-static %{buildroot}/bin/busybox-static
+install -m 755 busybox-static %{buildroot}/usr/bin/busybox-static
+ln -s ../usr/bin/busybox-static %{buildroot}/bin/busybox-static
 mkdir -p %{buildroot}/%{_docdir}/%{name}-%{version}
 install -m 644 -t %{buildroot}/%{_docdir}/%{name}-%{version} \
-	docs/BusyBox.html docs/BusyBox.txt
+        docs/BusyBox.html docs/BusyBox.txt
 
 %files
 %defattr(-,root,root,-)
 %license LICENSE
 /bin/busybox
+%{_bindir}/busybox
 /bin/ping
+%{_bindir}/ping
 /bin/ping6
+%{_bindir}/ping6
 %{_bindir}/time
 %{_bindir}/traceroute
 %{_bindir}/traceroute6
-/usr/sbin/arping
+%{_sbindir}/arping
 
 %files static
 %defattr(-,root,root,-)
 /bin/busybox-static
+%{_bindir}/busybox-static
 
 %files doc
 %defattr(-,root,root,-)
@@ -237,7 +255,9 @@ install -m 644 -t %{buildroot}/%{_docdir}/%{name}-%{version} \
 %files symlinks-dosfstools
 %defattr(-,root,root,-)
 /sbin/mkdosfs
+%{_sbindir}/mkdosfs
 /sbin/mkfs.vfat
+%{_sbindir}/mkfs.vfat
 
 %files symlinks-gzip
 %defattr(-,root,root,-)
@@ -246,11 +266,12 @@ install -m 644 -t %{buildroot}/%{_docdir}/%{name}-%{version} \
 /bin/gzip
 %{_bindir}/gzip
 /bin/zcat
+%{_bindir}/zcat
 
 %files symlinks-dhcp
 %defattr(-,root,root,-)
-/usr/sbin/udhcpc
-/usr/sbin/udhcpd
+%{_sbindir}/udhcpc
+%{_sbindir}/udhcpd
 /lib/systemd/system/udhcpd.service
 
 %files symlinks-diffutils
@@ -267,18 +288,21 @@ install -m 644 -t %{buildroot}/%{_docdir}/%{name}-%{version} \
 %files symlinks-grep
 %defattr(-,root,root,-)
 /bin/grep
+%{_bindir}/grep
 /bin/egrep
+%{_bindir}/egrep
 /bin/fgrep
+%{_bindir}/fgrep
 
 %files symlinks-cpio
 %defattr(-,root,root,-)
-%{_bindir}/cpio
 /bin/cpio
+%{_bindir}/cpio
 
 %files symlinks-tar
 %defattr(-,root,root,-)
-%{_bindir}/tar
 /bin/tar
+%{_bindir}/tar
 
 %files symlinks-which
 %defattr(-,root,root,-)
