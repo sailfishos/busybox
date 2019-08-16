@@ -3,7 +3,6 @@ Name: busybox
 Version: 1.31.0
 Release: 1
 License: GPLv2
-Group: System/Shells
 Source0: http://www.busybox.net/downloads/%{name}-%{version}.tar.bz2
 Source1: rpm/udhcpd.service
 Source2: busybox-static.config
@@ -31,7 +30,6 @@ particularly those involving broken shared libraries.
 
 %package doc
 Summary: Documentation for %{name}
-Group: Documentation
 Requires: %{name} = %{version}-%{release}
 Obsoletes: %{name}-docs
 
@@ -39,7 +37,6 @@ Obsoletes: %{name}-docs
 Busybox user guide.
 
 %package static
-Group: System Environment/Shells
 Summary: Statically linked version of busybox
 
 %description static
@@ -51,7 +48,6 @@ a statically linked version of Busybox.
 
 %package symlinks-dosfstools
 Requires: %{name} = %{version}-%{release}
-Group: System/Shells
 Summary: Busybox replacements for dosfstools
 
 %description symlinks-dosfstools
@@ -63,7 +59,6 @@ is the symlinks implementing part of dosfstools.
 
 %package symlinks-gzip
 Requires: %{name} = %{version}-%{release}
-Group: System/Shells
 Summary: Busybox replacements for gzip
 Provides: gzip = %{version}
 Obsoletes: gzip <= 1.5
@@ -77,7 +72,6 @@ is the symlinks implementing gzip replacements.
 
 %package symlinks-dhcp
 Requires: %{name} = %{version}-%{release}
-Group: System/Shells
 Summary: Busybox dhcp utilities
 
 %description symlinks-dhcp
@@ -89,7 +83,6 @@ the symlinks implementing the dhcp utilities (udhcpc/udhcpcd).
 
 %package symlinks-diffutils
 Requires: %{name} = %{version}-%{release}
-Group: System/Shells
 Summary: Busybox replacements for diffutils
 Provides: diffutils = %{version}
 Conflicts: gnu-diffutils
@@ -103,7 +96,6 @@ is the symlinks implementing part of diffutils replacements.
 
 %package symlinks-findutils
 Requires: %{name} = %{version}-%{release}
-Group: System/Shells
 Summary: Busybox replacements for findutils
 Provides: findutils = %{version}
 Conflicts: gnu-findutils
@@ -117,7 +109,6 @@ is the symlinks implementing findutils replacements.
 
 %package symlinks-grep
 Requires: %{name} = %{version}-%{release}
-Group: System/Shells
 Summary: Busybox replacements for grep
 Provides: grep = %{version}
 Provides: /bin/grep
@@ -132,7 +123,6 @@ is the symlinks implementing grep, egrep and fgrep replacements.
 
 %package symlinks-cpio
 Requires: %{name} = %{version}-%{release}
-Group: System/Shells
 Summary: Busybox replacements for cpio
 Provides: cpio
 Conflicts: gnu-cpio
@@ -146,7 +136,6 @@ the symlinks implementing cpio replacements.
 
 %package symlinks-tar
 Requires: %{name} = %{version}-%{release}
-Group: System/Shells
 Summary: Busybox replacements for tar
 Provides: tar = %{version}
 Conflicts: gnu-tar
@@ -160,7 +149,6 @@ is the symlink implementing tar replacement.
 
 %package symlinks-which
 Requires: %{name} = %{version}-%{release}
-Group: System/Shells
 Summary: Busybox replacements for which
 Provides: which = %{version}
 Conflicts: util-linux <= 2.33+git1
