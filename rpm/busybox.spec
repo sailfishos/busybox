@@ -10,6 +10,9 @@ Source3: busybox-sailfish.config
 Patch0:  0001-Copy-extended-attributes-if-p-flag-is-provided-to-cp.patch
 Patch1:  0002-applets-Busybox-in-usr-bin-instead-of-bin.patch
 URL: https://git.sailfishos.org/mer-core/busybox
+BuildRequires: glibc-static
+BuildRequires: libselinux-static libsepol-static
+BuildRequires: pcre-static
 
 Obsoletes: time <= 1.7
 Provides: time > 1.7
@@ -17,8 +20,6 @@ Provides: time > 1.7
 # Providing only part of iputils, but should be enough for us. 
 Obsoletes: iputils <= 20101006
 Provides: iputils > 20101006
-
-BuildRequires: glibc-static
 
 %define debug_package %{nil}
 
