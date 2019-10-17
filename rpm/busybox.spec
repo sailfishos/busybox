@@ -148,6 +148,19 @@ useful for recovering from certain types of system failures,
 particularly those involving broken shared libraries. This
 is the symlink implementing tar replacement.
 
+%package symlinks-vi
+Requires: %{name} = %{version}-%{release}
+Summary: Busybox replacements for vi
+Provides: vi
+Conflicts: vim-minimal
+
+%description symlinks-vi
+Busybox is a single binary which includes versions of a large number
+of system commands, including a shell.  This package can be very
+useful for recovering from certain types of system failures,
+particularly those involving broken shared libraries. This
+is the symlink implementing vi replacement.
+
 %package symlinks-which
 Requires: %{name} = %{version}-%{release}
 Summary: Busybox replacements for which
@@ -201,6 +214,7 @@ cat >> busybox.links << EOF
 %{_bindir}/fgrep
 %{_bindir}/cpio
 %{_bindir}/tar
+%{_bindir}/vi
 EOF
 
 %install
@@ -293,6 +307,12 @@ install -m 644 -t %{buildroot}/%{_docdir}/%{name}-%{version} \
 /bin/tar
 %{_bindir}/tar
 
+%files symlinks-vi
+%defattr(-,root,root,-)
+/bin/vi
+%{_bindir}/vi
+
 %files symlinks-which
 %defattr(-,root,root,-)
 %{_bindir}/which
+
