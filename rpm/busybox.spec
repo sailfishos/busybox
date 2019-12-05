@@ -61,8 +61,7 @@ is the symlinks implementing part of dosfstools.
 %package symlinks-gzip
 Requires: %{name} = %{version}-%{release}
 Summary: Busybox replacements for gzip
-Provides: gzip = %{version}
-Obsoletes: gzip <= 1.5
+Provides: gzip
 
 %description symlinks-gzip
 Busybox is a single binary which includes versions of a large number
@@ -85,7 +84,7 @@ the symlinks implementing the dhcp utilities (udhcpc/udhcpcd).
 %package symlinks-diffutils
 Requires: %{name} = %{version}-%{release}
 Summary: Busybox replacements for diffutils
-Provides: diffutils = %{version}
+Provides: diffutils
 Conflicts: gnu-diffutils
 
 %description symlinks-diffutils
@@ -98,7 +97,7 @@ is the symlinks implementing part of diffutils replacements.
 %package symlinks-findutils
 Requires: %{name} = %{version}-%{release}
 Summary: Busybox replacements for findutils
-Provides: findutils = %{version}
+Provides: findutils
 Conflicts: gnu-findutils
 
 %description symlinks-findutils
@@ -111,7 +110,7 @@ is the symlinks implementing findutils replacements.
 %package symlinks-grep
 Requires: %{name} = %{version}-%{release}
 Summary: Busybox replacements for grep
-Provides: grep = %{version}
+Provides: grep
 Provides: /bin/grep
 Conflicts: gnu-grep
 
@@ -138,7 +137,7 @@ the symlinks implementing cpio replacements.
 %package symlinks-tar
 Requires: %{name} = %{version}-%{release}
 Summary: Busybox replacements for tar
-Provides: tar = %{version}
+Provides: tar
 Conflicts: gnu-tar
 
 %description symlinks-tar
@@ -164,7 +163,7 @@ is the symlink implementing vi replacement.
 %package symlinks-which
 Requires: %{name} = %{version}-%{release}
 Summary: Busybox replacements for which
-Provides: which = %{version}
+Provides: which
 Conflicts: util-linux <= 2.33+git1
 
 %description symlinks-which
