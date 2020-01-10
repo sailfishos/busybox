@@ -198,7 +198,6 @@ make %{_smp_mflags}
 make busybox.links
 # /bin links are legacy, use /usr/bin whenever you can
 cat >> busybox.links << EOF
-/bin/busybox
 %{_bindir}/ping
 %{_bindir}/ping6
 %{_sbindir}/mkdosfs
@@ -207,7 +206,7 @@ cat >> busybox.links << EOF
 %{_bindir}/gunzip
 %{_bindir}/zcat
 %{_sbindir}/udhcpc
-/bin/find
+%{_bindir}/find
 %{_bindir}/grep
 %{_bindir}/egrep
 %{_bindir}/fgrep
@@ -216,17 +215,20 @@ cat >> busybox.links << EOF
 %{_bindir}/vi
 EOF
 
+# Move all symlinks under /usr
+sed -i "s|^/bin|/usr/bin|g" busybox.links
+sed -i "s|^/sbin|/usr/sbin|g" busybox.links
+sort busybox.links | uniq -d
+
 %install
 rm -rf %{buildroot}
-mkdir -p %{buildroot}/bin
 mkdir -p %{buildroot}/usr/bin
 install -m 755 busybox %{buildroot}/usr/bin/busybox
-install -m 644 -D %{SOURCE1} %{buildroot}/lib/systemd/system/udhcpd.service
+install -m 644 -D %{SOURCE1} %{buildroot}%{_libdir}/systemd/system/udhcpd.service
 applets/install.sh %{buildroot} --symlinks
 rm -f %{buildroot}/sbin/udhcpc
 
 install -m 755 busybox-static %{buildroot}/usr/bin/busybox-static
-ln -s ../usr/bin/busybox-static %{buildroot}/bin/busybox-static
 mkdir -p %{buildroot}/%{_docdir}/%{name}-%{version}
 install -m 644 -t %{buildroot}/%{_docdir}/%{name}-%{version} \
         docs/BusyBox.html docs/BusyBox.txt
@@ -234,11 +236,8 @@ install -m 644 -t %{buildroot}/%{_docdir}/%{name}-%{version} \
 %files
 %defattr(-,root,root,-)
 %license LICENSE
-/bin/busybox
 %{_bindir}/busybox
-/bin/ping
 %{_bindir}/ping
-/bin/ping6
 %{_bindir}/ping6
 %{_bindir}/time
 %{_bindir}/traceroute
@@ -247,7 +246,6 @@ install -m 644 -t %{buildroot}/%{_docdir}/%{name}-%{version} \
 
 %files static
 %defattr(-,root,root,-)
-/bin/busybox-static
 %{_bindir}/busybox-static
 
 %files doc
@@ -256,25 +254,20 @@ install -m 644 -t %{buildroot}/%{_docdir}/%{name}-%{version} \
 
 %files symlinks-dosfstools
 %defattr(-,root,root,-)
-/sbin/mkdosfs
 %{_sbindir}/mkdosfs
-/sbin/mkfs.vfat
 %{_sbindir}/mkfs.vfat
 
 %files symlinks-gzip
 %defattr(-,root,root,-)
-/bin/gunzip
 %{_bindir}/gunzip
-/bin/gzip
 %{_bindir}/gzip
-/bin/zcat
 %{_bindir}/zcat
 
 %files symlinks-dhcp
 %defattr(-,root,root,-)
 %{_sbindir}/udhcpc
 %{_sbindir}/udhcpd
-/lib/systemd/system/udhcpd.service
+%{_libdir}/systemd/system/udhcpd.service
 
 %files symlinks-diffutils
 %defattr(-,root,root,-)
@@ -283,32 +276,25 @@ install -m 644 -t %{buildroot}/%{_docdir}/%{name}-%{version} \
 
 %files symlinks-findutils
 %defattr(-,root,root,-)
-/bin/find
 %{_bindir}/find
 %{_bindir}/xargs
 
 %files symlinks-grep
 %defattr(-,root,root,-)
-/bin/grep
 %{_bindir}/grep
-/bin/egrep
 %{_bindir}/egrep
-/bin/fgrep
 %{_bindir}/fgrep
 
 %files symlinks-cpio
 %defattr(-,root,root,-)
-/bin/cpio
 %{_bindir}/cpio
 
 %files symlinks-tar
 %defattr(-,root,root,-)
-/bin/tar
 %{_bindir}/tar
 
 %files symlinks-vi
 %defattr(-,root,root,-)
-/bin/vi
 %{_bindir}/vi
 
 %files symlinks-which
