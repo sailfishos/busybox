@@ -47,39 +47,36 @@ useful for recovering from certain types of system failures,
 particularly those involving broken shared libraries. This package provides
 a statically linked version of Busybox.
 
+%package symlinks-coreutils
+Requires: %{name} = %{version}-%{release}
+Summary: Busybox replacements for coreutils
+Provides: coreutils
+Conflicts: gnu-coreutils
+
+%description symlinks-coreutils
+%{summary} as symlinks.
+
 %package symlinks-dosfstools
 Requires: %{name} = %{version}-%{release}
 Summary: Busybox replacements for dosfstools
 
 %description symlinks-dosfstools
-Busybox is a single binary which includes versions of a large number
-of system commands, including a shell.  This package can be very
-useful for recovering from certain types of system failures,
-particularly those involving broken shared libraries. This
-is the symlinks implementing part of dosfstools.
+%{summary} as symlinks.
 
 %package symlinks-gzip
 Requires: %{name} = %{version}-%{release}
-Summary: Busybox replacements for gzip
+Summary: Busybox replacement for gzip
 Provides: gzip
 
 %description symlinks-gzip
-Busybox is a single binary which includes versions of a large number
-of system commands, including a shell.  This package can be very
-useful for recovering from certain types of system failures,
-particularly those involving broken shared libraries. This
-is the symlinks implementing gzip replacements.
+%{summary} as symlinks.
 
 %package symlinks-dhcp
 Requires: %{name} = %{version}-%{release}
 Summary: Busybox dhcp utilities
 
 %description symlinks-dhcp
-Busybox is a single binary which includes versions of a large number
-of system commands, including a shell.  This package can be very
-useful for recovering from certain types of system failures,
-particularly those involving broken shared libraries. This contains
-the symlinks implementing the dhcp utilities (udhcpc/udhcpcd).
+%{summary} as symlinks (udhcpc/udhcpcd).
 
 %package symlinks-diffutils
 Requires: %{name} = %{version}-%{release}
@@ -88,11 +85,7 @@ Provides: diffutils
 Conflicts: gnu-diffutils
 
 %description symlinks-diffutils
-Busybox is a single binary which includes versions of a large number
-of system commands, including a shell.  This package can be very
-useful for recovering from certain types of system failures,
-particularly those involving broken shared libraries. This
-is the symlinks implementing part of diffutils replacements.
+%{summary} as symlinks.
 
 %package symlinks-findutils
 Requires: %{name} = %{version}-%{release}
@@ -101,77 +94,53 @@ Provides: findutils
 Conflicts: gnu-findutils
 
 %description symlinks-findutils
-Busybox is a single binary which includes versions of a large number
-of system commands, including a shell.  This package can be very
-useful for recovering from certain types of system failures,
-particularly those involving broken shared libraries. This
-is the symlinks implementing findutils replacements.
+%{summary} as symlinks.
 
 %package symlinks-grep
 Requires: %{name} = %{version}-%{release}
-Summary: Busybox replacements for grep
+Summary: Busybox replacement for grep
 Provides: grep
 Provides: /bin/grep
 Conflicts: gnu-grep
 
 %description symlinks-grep
-Busybox is a single binary which includes versions of a large number
-of system commands, including a shell.  This package can be very
-useful for recovering from certain types of system failures,
-particularly those involving broken shared libraries. This
-is the symlinks implementing grep, egrep and fgrep replacements.
+%{summary} as symlinks (grep, egrep, fgrep).
 
 %package symlinks-cpio
 Requires: %{name} = %{version}-%{release}
-Summary: Busybox replacements for cpio
+Summary: Busybox replacement for cpio
 Provides: cpio
 Conflicts: gnu-cpio
 
 %description symlinks-cpio
-Busybox is a single binary which includes versions of a large number
-of system commands, including a shell. This package can be very
-useful for recovering from certain types of system failures,
-particularly those involving broken shared libraries. This contains
-the symlinks implementing cpio replacements.
+%{summary} as symlinks.
 
 %package symlinks-tar
 Requires: %{name} = %{version}-%{release}
-Summary: Busybox replacements for tar
+Summary: Busybox replacement for tar
 Provides: tar
 Conflicts: gnu-tar
 
 %description symlinks-tar
-Busybox is a single binary which includes versions of a large number
-of system commands, including a shell.  This package can be very
-useful for recovering from certain types of system failures,
-particularly those involving broken shared libraries. This
-is the symlink implementing tar replacement.
+%{summary} as symlinks.
 
 %package symlinks-vi
 Requires: %{name} = %{version}-%{release}
-Summary: Busybox replacements for vi
+Summary: Busybox replacement for vi
 Provides: vi
 Conflicts: vim-minimal
 
 %description symlinks-vi
-Busybox is a single binary which includes versions of a large number
-of system commands, including a shell.  This package can be very
-useful for recovering from certain types of system failures,
-particularly those involving broken shared libraries. This
-is the symlink implementing vi replacement.
+%{summary} as symlinks.
 
 %package symlinks-which
 Requires: %{name} = %{version}-%{release}
-Summary: Busybox replacements for which
+Summary: Busybox replacement for which
 Provides: which
 Conflicts: util-linux <= 2.33+git1
 
 %description symlinks-which
-Busybox is a single binary which includes versions of a large number
-of system commands, including a shell.  This package can be very
-useful for recovering from certain types of system failures,
-particularly those involving broken shared libraries. This
-is the symlink implementing which replacement.
+%{summary} as symlinks.
 
 %prep
 %setup -q -n %{name}-%{version}/upstream
@@ -214,6 +183,37 @@ cat >> busybox.links << EOF
 %{_bindir}/cpio
 %{_bindir}/tar
 %{_bindir}/vi
+/bin/env
+%{_bindir}/base64
+%{_bindir}/cat
+%{_bindir}/chgrp
+%{_bindir}/chmod
+%{_bindir}/chown
+%{_bindir}/cp
+%{_bindir}/date
+%{_bindir}/dd
+%{_bindir}/df
+%{_bindir}/echo
+%{_bindir}/false
+%{_bindir}/link
+%{_bindir}/ln
+%{_bindir}/ls
+%{_bindir}/mkdir
+%{_bindir}/mknod
+%{_bindir}/mktemp
+%{_bindir}/mv
+%{_bindir}/nice
+%{_bindir}/printenv
+%{_bindir}/pwd
+%{_bindir}/rm
+%{_bindir}/rmdir
+%{_bindir}/sleep
+%{_bindir}/stat
+%{_bindir}/stty
+%{_bindir}/sync
+%{_bindir}/touch
+%{_bindir}/true
+%{_bindir}/uname
 EOF
 
 %install
@@ -224,6 +224,8 @@ install -m 755 busybox %{buildroot}/usr/bin/busybox
 install -m 644 -D %{SOURCE1} %{buildroot}/lib/systemd/system/udhcpd.service
 applets/install.sh %{buildroot} --symlinks
 rm -f %{buildroot}/sbin/udhcpc
+# Cleanup some symlinks
+rm -f %{buildroot}/bin/base64
 
 install -m 755 busybox-static %{buildroot}/usr/bin/busybox-static
 ln -s ../usr/bin/busybox-static %{buildroot}/bin/busybox-static
@@ -253,6 +255,120 @@ install -m 644 -t %{buildroot}/%{_docdir}/%{name}-%{version} \
 %files doc
 %defattr(-,root,root,-)
 %doc %{_docdir}/%{name}-%{version}
+
+%files symlinks-coreutils
+%defattr(-,root,root,-)
+/bin/cat
+/bin/chgrp
+/bin/chmod
+/bin/chown
+/bin/cp
+/bin/date
+/bin/dd
+/bin/df
+/bin/echo
+/bin/env
+/bin/false
+/bin/link
+/bin/ln
+/bin/ls
+/bin/mkdir
+/bin/mknod
+/bin/mktemp
+/bin/mv
+/bin/nice
+/bin/printenv
+/bin/pwd
+/bin/rm
+/bin/rmdir
+/bin/sleep
+/bin/stat
+/bin/stty
+/bin/sync
+/bin/touch
+/bin/true
+/bin/uname
+%{_bindir}/[
+%{_bindir}/base64
+%{_bindir}/basename
+%{_bindir}/cat
+%{_bindir}/chgrp
+%{_bindir}/chmod
+%{_bindir}/chown
+%{_bindir}/cksum
+%{_bindir}/comm
+%{_bindir}/cp
+%{_bindir}/cut
+%{_bindir}/date
+%{_bindir}/dd
+%{_bindir}/df
+%{_bindir}/dirname
+%{_bindir}/du
+%{_bindir}/echo
+%{_bindir}/env
+%{_bindir}/expand
+%{_bindir}/expr
+%{_bindir}/factor
+%{_bindir}/false
+%{_bindir}/fold
+%{_bindir}/groups
+%{_bindir}/head
+%{_bindir}/hostid
+%{_bindir}/id
+%{_bindir}/install
+%{_bindir}/link
+%{_bindir}/ln
+%{_bindir}/logname
+%{_bindir}/ls
+%{_bindir}/md5sum
+%{_bindir}/mkdir
+%{_bindir}/mkfifo
+%{_bindir}/mknod
+%{_bindir}/mktemp
+%{_bindir}/mv
+%{_bindir}/nice
+%{_bindir}/nl
+%{_bindir}/nohup
+%{_bindir}/od
+%{_bindir}/paste
+%{_bindir}/printenv
+%{_bindir}/printf
+%{_bindir}/pwd
+%{_bindir}/readlink
+%{_bindir}/rm
+%{_bindir}/rmdir
+%{_bindir}/seq
+%{_bindir}/sha1sum
+%{_bindir}/sha256sum
+%{_bindir}/sha512sum
+%{_bindir}/shred
+%{_bindir}/shuf
+%{_bindir}/sleep
+%{_bindir}/sort
+%{_bindir}/split
+%{_bindir}/stat
+%{_bindir}/stty
+%{_bindir}/sum
+%{_bindir}/sync
+%{_bindir}/tac
+%{_bindir}/tail
+%{_bindir}/tee
+%{_bindir}/test
+%{_bindir}/touch
+%{_bindir}/tr
+%{_bindir}/true
+%{_bindir}/tty
+%{_bindir}/uname
+%{_bindir}/unexpand
+%{_bindir}/uniq
+%{_bindir}/unlink
+%{_bindir}/users
+%{_bindir}/wc
+%{_bindir}/who
+%{_bindir}/whoami
+%{_bindir}/yes
+%{_sbindir}/chroot
+
 
 %files symlinks-dosfstools
 %defattr(-,root,root,-)
@@ -289,12 +405,8 @@ install -m 644 -t %{buildroot}/%{_docdir}/%{name}-%{version} \
 
 %files symlinks-grep
 %defattr(-,root,root,-)
-/bin/grep
-%{_bindir}/grep
-/bin/egrep
-%{_bindir}/egrep
-/bin/fgrep
-%{_bindir}/fgrep
+/bin/{,e,f}grep
+%{_bindir}/{,e,f}grep
 
 %files symlinks-cpio
 %defattr(-,root,root,-)
