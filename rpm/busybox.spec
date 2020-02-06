@@ -50,8 +50,9 @@ a statically linked version of Busybox.
 %package symlinks-coreutils
 Requires: %{name} = %{version}-%{release}
 Summary: Busybox replacements for coreutils
-Provides: coreutils
 Conflicts: gnu-coreutils
+Provides: coreutils = 1:6.9+git1
+Obsoletes: coreutils < 1:6.9+git1
 
 %description symlinks-coreutils
 %{summary} as symlinks.
