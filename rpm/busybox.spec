@@ -16,6 +16,7 @@ BuildRequires: glibc-static
 BuildRequires: libselinux-static libsepol-static
 BuildRequires: pcre-static
 BuildRequires: systemd
+BuildRequires: sed
 
 Obsoletes: time <= 1.7
 Provides: time > 1.7
@@ -146,6 +147,16 @@ Conflicts: procps-ng
 %description symlinks-procps
 %{summary} as symlinks.
 
+%package symlinks-sed
+Requires: %{name} = %{version}-%{release}
+Summary: Busybox replacement for sed
+Provides: sed = 1:4.1.5+git1
+Obsoletes: sed < 1:4.1.5+git1
+Conflicts: gnu-sed
+
+%description symlinks-sed
+%{summary} as symlinks.
+
 %package symlinks-tar
 Requires: %{name} = %{version}-%{release}
 Summary: Busybox replacement for tar
@@ -265,6 +276,7 @@ cat >> busybox.links << EOF
 %{_bindir}/pwd
 %{_bindir}/rm
 %{_bindir}/rmdir
+%{_bindir}/sed
 %{_bindir}/sleep
 %{_bindir}/stat
 %{_bindir}/stty
@@ -511,6 +523,11 @@ rm -f %{buildroot}/bin/pidof
 %{_bindir}/top
 %{_bindir}/uptime
 %{_bindir}/w
+
+%files symlinks-sed
+%defattr(-,root,root,-)
+/bin/sed
+%{_bindir}/sed
 
 %files symlinks-tar
 %defattr(-,root,root,-)
