@@ -53,6 +53,7 @@ Summary: Busybox replacements for coreutils
 Conflicts: gnu-coreutils
 Provides: coreutils = 1:6.9+git1
 Obsoletes: coreutils < 1:6.9+git1
+Provides: mktemp
 
 %description symlinks-coreutils
 %{summary} as symlinks.
@@ -184,7 +185,10 @@ cat >> busybox.links << EOF
 %{_bindir}/cpio
 %{_bindir}/tar
 %{_bindir}/vi
+/bin/basename
+/bin/cut
 /bin/env
+/bin/sort
 %{_bindir}/base64
 %{_bindir}/cat
 %{_bindir}/chgrp
@@ -259,11 +263,13 @@ install -m 644 -t %{buildroot}/%{_docdir}/%{name}-%{version} \
 
 %files symlinks-coreutils
 %defattr(-,root,root,-)
+/bin/basename
 /bin/cat
 /bin/chgrp
 /bin/chmod
 /bin/chown
 /bin/cp
+/bin/cut
 /bin/date
 /bin/dd
 /bin/df
@@ -283,6 +289,7 @@ install -m 644 -t %{buildroot}/%{_docdir}/%{name}-%{version} \
 /bin/rm
 /bin/rmdir
 /bin/sleep
+/bin/sort
 /bin/stat
 /bin/stty
 /bin/sync
