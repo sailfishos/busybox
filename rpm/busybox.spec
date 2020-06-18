@@ -7,6 +7,7 @@ Source0: http://www.busybox.net/downloads/%{name}-%{version}.tar.bz2
 Source1: rpm/udhcpd.service
 Source2: busybox-static.config
 Source3: busybox-sailfish.config
+Source4: set_ps1.sh
 Patch0:  0001-Copy-extended-attributes-if-p-flag-is-provided-to-cp.patch
 Patch1:  0002-applets-Busybox-in-usr-bin-instead-of-bin.patch
 Patch2:  0003-applets-watch-in-usr-bin.patch
@@ -48,6 +49,17 @@ of system commands, including a shell.  This package can be very
 useful for recovering from certain types of system failures,
 particularly those involving broken shared libraries. This package provides
 a statically linked version of Busybox.
+
+%package symlinks-bash
+Requires: %{name} = %{version}-%{release}
+Summary: Busybox replacement for bash
+Conflicts: gnu-bash
+Obsoletes: bash < 1:3.2.57+git1
+Provides: bash = 1:3.2.57+git1
+
+%description symlinks-bash
+%{summary} as symlinks. Provides ash with sh and bash symlinks as
+a mostly compatible alternative to GNU Bash.
 
 %package symlinks-coreutils
 Requires: %{name} = %{version}-%{release}
@@ -246,6 +258,9 @@ cat >> busybox.links << EOF
 %{_bindir}/uname
 %{_bindir}/clear
 %{_bindir}/reset
+%{_bindir}/sh
+%{_bindir}/ash
+%{_bindir}/bash
 EOF
 
 %install
@@ -259,6 +274,8 @@ rm -f %{buildroot}/sbin/udhcpc
 # Cleanup some symlinks
 rm -f %{buildroot}/bin/base64
 
+install -m 644 -D %{SOURCE4} %{buildroot}/%{_sysconfdir}/profile.d/set_ps1.sh
+
 install -m 755 busybox-static %{buildroot}/usr/bin/busybox-static
 ln -s ../usr/bin/busybox-static %{buildroot}/bin/busybox-static
 mkdir -p %{buildroot}/%{_docdir}/%{name}-%{version}
@@ -270,6 +287,8 @@ install -m 644 -t %{buildroot}/%{_docdir}/%{name}-%{version} \
 %license LICENSE
 /bin/busybox
 %{_bindir}/busybox
+/bin/ash
+%{_bindir}/ash
 /bin/ping
 %{_bindir}/ping
 /bin/ping6
@@ -287,6 +306,14 @@ install -m 644 -t %{buildroot}/%{_docdir}/%{name}-%{version} \
 %files doc
 %defattr(-,root,root,-)
 %doc %{_docdir}/%{name}-%{version}
+
+%files symlinks-bash
+%defattr(-,root,root,-)
+/bin/bash
+/bin/sh
+%{_bindir}/bash
+%{_bindir}/sh
+%{_sysconfdir}/profile.d/set_ps1.sh
 
 %files symlinks-coreutils
 %defattr(-,root,root,-)
@@ -324,6 +351,7 @@ install -m 644 -t %{buildroot}/%{_docdir}/%{name}-%{version} \
 /bin/true
 /bin/uname
 %{_bindir}/[
+%{_bindir}/[[
 %{_bindir}/base64
 %{_bindir}/basename
 %{_bindir}/cat
@@ -403,7 +431,6 @@ install -m 644 -t %{buildroot}/%{_docdir}/%{name}-%{version} \
 %{_bindir}/whoami
 %{_bindir}/yes
 %{_sbindir}/chroot
-
 
 %files symlinks-dosfstools
 %defattr(-,root,root,-)
