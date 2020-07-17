@@ -13,6 +13,7 @@ URL: https://git.sailfishos.org/mer-core/busybox
 BuildRequires: glibc-static
 BuildRequires: libselinux-static libsepol-static
 BuildRequires: pcre-static
+BuildRequires: systemd
 
 Obsoletes: time <= 1.7
 Provides: time > 1.7
@@ -154,7 +155,7 @@ Conflicts: util-linux <= 2.33+git1
 # currently the features differ quite a bit
 cp %{SOURCE2} .config
 yes "" | make oldconfig
-make %{?_smp_mflags}
+%make_build
 cp busybox busybox-static
 
 # clean any leftovers from static build
@@ -226,7 +227,7 @@ rm -rf %{buildroot}
 mkdir -p %{buildroot}/bin
 mkdir -p %{buildroot}/usr/bin
 install -m 755 busybox %{buildroot}/usr/bin/busybox
-install -m 644 -D %{SOURCE1} %{buildroot}/lib/systemd/system/udhcpd.service
+install -m 644 -D %{SOURCE1} %{buildroot}%{_unitdir}/udhcpd.service
 applets/install.sh %{buildroot} --symlinks
 rm -f %{buildroot}/sbin/udhcpc
 # Cleanup some symlinks
@@ -398,7 +399,7 @@ install -m 644 -t %{buildroot}/%{_docdir}/%{name}-%{version} \
 %defattr(-,root,root,-)
 %{_sbindir}/udhcpc
 %{_sbindir}/udhcpd
-/lib/systemd/system/udhcpd.service
+%{_unitdir}/udhcpd.service
 
 %files symlinks-diffutils
 %defattr(-,root,root,-)
