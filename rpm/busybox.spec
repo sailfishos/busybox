@@ -145,6 +145,16 @@ Conflicts: util-linux <= 2.33+git1
 %description symlinks-which
 %{summary} as symlinks.
 
+%package symlinks-console-tools
+Requires: %{name} = %{version}-%{release}
+Summary: Busybox replacement for console tools
+Provides: console-tools
+Conflicts: ncurses
+Obsoletes: ncurses < 6.1+git2
+
+%description symlinks-console-tools
+%{summary} as symlinks.
+
 %prep
 %setup -q -n %{name}-%{version}/upstream
 %patch0 -p1
@@ -220,6 +230,8 @@ cat >> busybox.links << EOF
 %{_bindir}/touch
 %{_bindir}/true
 %{_bindir}/uname
+%{_bindir}/clear
+%{_bindir}/reset
 EOF
 
 %install
@@ -436,3 +448,7 @@ install -m 644 -t %{buildroot}/%{_docdir}/%{name}-%{version} \
 %defattr(-,root,root,-)
 %{_bindir}/which
 
+%files symlinks-console-tools
+%defattr(-,root,root,-)
+%{_bindir}/clear
+%{_bindir}/reset
