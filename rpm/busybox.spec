@@ -9,6 +9,7 @@ Source2: busybox-static.config
 Source3: busybox-sailfish.config
 Patch0:  0001-Copy-extended-attributes-if-p-flag-is-provided-to-cp.patch
 Patch1:  0002-applets-Busybox-in-usr-bin-instead-of-bin.patch
+Patch2:  0003-applets-watch-in-usr-bin.patch
 URL: https://git.sailfishos.org/mer-core/busybox
 BuildRequires: glibc-static
 BuildRequires: libselinux-static libsepol-static
@@ -118,6 +119,16 @@ Conflicts: gnu-cpio
 %description symlinks-cpio
 %{summary} as symlinks.
 
+%package symlinks-procps
+Requires: %{name} = %{version}-%{release}
+Summary: Busybox replacement for procps
+Provides: procps = 3.3.15+git2
+Obsoletes: procps < 3.3.15+git2
+Conflicts: procps-ng
+
+%description symlinks-procps
+%{summary} as symlinks.
+
 %package symlinks-tar
 Requires: %{name} = %{version}-%{release}
 Summary: Busybox replacement for tar
@@ -159,6 +170,7 @@ Obsoletes: ncurses < 6.1+git2
 %setup -q -n %{name}-%{version}/upstream
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
 
 %build
 # TODO: This config should be synced with the dynamic config at some point
@@ -185,6 +197,7 @@ cat >> busybox.links << EOF
 %{_bindir}/ping6
 %{_sbindir}/mkdosfs
 %{_sbindir}/mkfs.vfat
+%{_sbindir}/sysctl
 %{_bindir}/gzip
 %{_bindir}/gunzip
 %{_bindir}/zcat
@@ -220,6 +233,7 @@ cat >> busybox.links << EOF
 %{_bindir}/mv
 %{_bindir}/nice
 %{_bindir}/printenv
+%{_bindir}/ps
 %{_bindir}/pwd
 %{_bindir}/rm
 %{_bindir}/rmdir
@@ -433,6 +447,22 @@ install -m 644 -t %{buildroot}/%{_docdir}/%{name}-%{version} \
 %defattr(-,root,root,-)
 /bin/cpio
 %{_bindir}/cpio
+
+%files symlinks-procps
+%defattr(-,root,root,-)
+/bin/ps
+/sbin/sysctl
+%{_bindir}/ps
+%{_bindir}/watch
+%{_sbindir}/sysctl
+%{_bindir}/free
+%{_bindir}/pgrep
+%{_bindir}/pkill
+%{_bindir}/pmap
+%{_bindir}/pwdx
+%{_bindir}/top
+%{_bindir}/uptime
+%{_bindir}/w
 
 %files symlinks-tar
 %defattr(-,root,root,-)
