@@ -82,7 +82,9 @@ Summary: Busybox replacements for dosfstools
 %package symlinks-gzip
 Requires: %{name} = %{version}-%{release}
 Summary: Busybox replacement for gzip
-Provides: gzip
+Conflicts: gnu-gzip
+Provides: gzip = 1.9+git1
+Obsoletes: gzip < 1.9+git1
 
 %description symlinks-gzip
 %{summary} as symlinks.
