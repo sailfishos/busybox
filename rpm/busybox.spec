@@ -11,6 +11,7 @@ Source4: set_ps1.sh
 Patch0:  0001-Copy-extended-attributes-if-p-flag-is-provided-to-cp.patch
 Patch1:  0002-applets-Busybox-in-usr-bin-instead-of-bin.patch
 Patch2:  0003-applets-watch-in-usr-bin.patch
+Patch3:  0001-ash-Load-ENV-file-also-if-SSH_CLIENT-SSH2_CLIENT-is-.patch
 URL: https://git.sailfishos.org/mer-core/busybox
 BuildRequires: glibc-static
 BuildRequires: libselinux-static libsepol-static
@@ -181,10 +182,7 @@ Obsoletes: ncurses < 6.1+git2
 %{summary} as symlinks.
 
 %prep
-%setup -q -n %{name}-%{version}/upstream
-%patch0 -p1
-%patch1 -p1
-%patch2 -p1
+%autosetup -p1 -q -n %{name}-%{version}/upstream
 
 %build
 # TODO: This config should be synced with the dynamic config at some point
