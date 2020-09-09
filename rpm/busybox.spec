@@ -180,6 +180,16 @@ Obsoletes: ncurses < 6.1+git2
 %description symlinks-console-tools
 %{summary} as symlinks.
 
+%package symlinks-psmisc
+Requires: %{name} = %{version}-%{release}
+Summary: Busybox replacement for psmisc
+Provides: psmisc = 22.13+git1
+Conflicts: psmisc-tools
+Obsoletes: psmisc < 22.13+git1
+
+%description symlinks-psmisc
+%{summary} as symlinks.
+
 %prep
 %setup -q -n %{name}-%{version}/upstream
 %patch0 -p1
@@ -263,6 +273,9 @@ cat >> busybox.links << EOF
 %{_bindir}/sh
 %{_bindir}/ash
 %{_bindir}/bash
+/sbin/fuser
+/sbin/pidof
+%{_bindir}/pidof
 EOF
 
 %install
@@ -283,6 +296,8 @@ ln -s ../usr/bin/busybox-static %{buildroot}/bin/busybox-static
 mkdir -p %{buildroot}/%{_docdir}/%{name}-%{version}
 install -m 644 -t %{buildroot}/%{_docdir}/%{name}-%{version} \
         docs/BusyBox.html docs/BusyBox.txt
+
+rm -f %{buildroot}/bin/pidof
 
 %files
 %defattr(-,root,root,-)
@@ -511,3 +526,12 @@ install -m 644 -t %{buildroot}/%{_docdir}/%{name}-%{version} \
 %defattr(-,root,root,-)
 %{_bindir}/clear
 %{_bindir}/reset
+
+%files symlinks-psmisc
+%defattr(-,root,root,-)
+/sbin/fuser
+/sbin/pidof
+%{_bindir}/fuser
+%{_bindir}/pidof
+%{_bindir}/killall
+%{_bindir}/pstree
