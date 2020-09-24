@@ -99,8 +99,9 @@ Summary: Busybox dhcp utilities
 %package symlinks-diffutils
 Requires: %{name} = %{version}-%{release}
 Summary: Busybox replacements for diffutils
-Provides: diffutils
 Conflicts: gnu-diffutils
+Provides: diffutils = 2.8.1+git1
+Obsoletes: diffutils < 2.8.1+git1
 
 %description symlinks-diffutils
 %{summary} as symlinks.
@@ -108,8 +109,9 @@ Conflicts: gnu-diffutils
 %package symlinks-findutils
 Requires: %{name} = %{version}-%{release}
 Summary: Busybox replacements for findutils
-Provides: findutils
 Conflicts: gnu-findutils
+Provides: findutils = 4.6.0+git2
+Obsoletes: findutils < 4.6.0+git2
 
 %description symlinks-findutils
 %{summary} as symlinks.
@@ -117,9 +119,10 @@ Conflicts: gnu-findutils
 %package symlinks-grep
 Requires: %{name} = %{version}-%{release}
 Summary: Busybox replacement for grep
-Provides: grep
-Provides: /bin/grep
 Conflicts: gnu-grep
+Provides: grep = 1:2.5.1a+git1
+Provides: /bin/grep
+Obsoletes: grep < 1:2.5.1a+git1
 
 %description symlinks-grep
 %{summary} as symlinks (grep, egrep, fgrep).
@@ -146,8 +149,9 @@ Conflicts: procps-ng
 %package symlinks-tar
 Requires: %{name} = %{version}-%{release}
 Summary: Busybox replacement for tar
-Provides: tar
 Conflicts: gnu-tar
+Provides: tar = 1.32+git2
+Obsoletes: tar < 1.32+git2
 
 %description symlinks-tar
 %{summary} as symlinks.
