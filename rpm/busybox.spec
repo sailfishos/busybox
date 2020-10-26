@@ -207,7 +207,7 @@ Obsoletes: psmisc < 22.13+git1
 %{summary} as symlinks.
 
 %prep
-%autosetup -p1 -q -n %{name}-%{version}/upstream
+%autosetup -p1 -n %{name}-%{version}/upstream
 
 %build
 # TODO: This config should be synced with the dynamic config at some point
