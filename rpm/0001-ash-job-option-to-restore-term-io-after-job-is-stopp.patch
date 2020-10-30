@@ -1,0 +1,49 @@
+From 73514579b4bb1668b17075440dfaa2f882a79c96 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Bj=C3=B6rn=20Bidar?= <bjorn.bidar@jolla.com>
+Date: Fri, 30 Oct 2020 12:18:01 +0200
+Subject: [PATCH] ash: job: option to restore term io after job is
+ stopped/killed
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+This moves the restore IOS support into a build option so it can be
+disabled/enabled. Using this fixes lost terminal stdout after using ^C
+on programs like /bin/su.
+
+Signed-off-by: Björn Bidar <bjorn.bidar@jolla.com>
+---
+ shell/ash.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
+
+diff --git a/shell/ash.c b/shell/ash.c
+index ecb9b132b..97bf55994 100644
+--- a/shell/ash.c
++++ b/shell/ash.c
+@@ -77,6 +77,14 @@
+ //config:	default y
+ //config:	depends on SHELL_ASH
+ //config:
++//config:config ASH_JOB_RESTORE_TERM_IOS
++//config:   bool "Restore termio"
++//config:   default y
++//config:   depends on ASH || SH_IS_ASH || BASH_IS_ASH
++//config:   help
++//config:   Restore IO after foreground job received SIGINT/SIGKILL/SIGSTOP.
++//config:   Avoids lost STDOUT after programs like su recieves ^C.
++//config:
+ //config:config ASH_ALIAS
+ //config:	bool "Alias support"
+ //config:	default y
+@@ -3796,7 +3804,7 @@ static unsigned njobs; //4
+ /* current job */
+ static struct job *curjob; //lots
+ 
+-#if 0
++#if ENABLE_ASH_JOB_RESTORE_TERM_IOS
+ /* Bash has a feature: it restores termios after a successful wait for
+  * a foreground job which had at least one stopped or sigkilled member.
+  * The probable rationale is that SIGSTOP and SIGKILL can preclude task from
+-- 
+2.29.1
+

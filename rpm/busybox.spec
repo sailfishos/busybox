@@ -12,6 +12,7 @@ Patch0:  0001-Copy-extended-attributes-if-p-flag-is-provided-to-cp.patch
 Patch1:  0002-applets-Busybox-in-usr-bin-instead-of-bin.patch
 Patch2:  0003-applets-watch-in-usr-bin.patch
 Patch3:  0001-ash-Load-ENV-file-also-if-SSH_CLIENT-SSH2_CLIENT-is-.patch
+Patch4:  0001-ash-job-option-to-restore-term-io-after-job-is-stopp.patch
 URL: https://git.sailfishos.org/mer-core/busybox
 BuildRequires: glibc-static
 BuildRequires: libselinux-static libsepol-static
@@ -293,7 +294,6 @@ cat >> busybox.links << EOF
 EOF
 
 %install
-rm -rf %{buildroot}
 mkdir -p %{buildroot}/bin
 mkdir -p %{buildroot}/usr/bin
 install -m 755 busybox %{buildroot}/usr/bin/busybox
