@@ -10,9 +10,9 @@ Source3: busybox-sailfish.config
 Source4: set_ps1.sh
 Patch0:  0001-Copy-extended-attributes-if-p-flag-is-provided-to-cp.patch
 Patch1:  0002-applets-Busybox-in-usr-bin-instead-of-bin.patch
-Patch2:  0003-applets-watch-in-usr-bin.patch
-Patch3:  0001-ash-Load-ENV-file-also-if-SSH_CLIENT-SSH2_CLIENT-is-.patch
-Patch4:  0001-ash-job-option-to-restore-term-io-after-job-is-stopp.patch
+Patch2:  0003-Align-watch-with-what-is-in-procps-ng.patch
+Patch3:  0004-ash-Load-ENV-file-also-if-SSH_CLIENT-SSH2_CLIENT-is-.patch
+Patch4:  0005-ash-job-option-to-restore-term-io-after-job-is-stopp.patch
 URL: https://git.sailfishos.org/mer-core/busybox
 BuildRequires: glibc-static
 BuildRequires: libselinux-static libsepol-static
@@ -299,8 +299,8 @@ mkdir -p %{buildroot}/usr/bin
 install -m 755 busybox %{buildroot}/usr/bin/busybox
 install -m 644 -D %{SOURCE1} %{buildroot}%{_unitdir}/udhcpd.service
 applets/install.sh %{buildroot} --symlinks
-rm -f %{buildroot}/sbin/udhcpc
 # Cleanup some symlinks
+rm -f %{buildroot}/sbin/udhcpc
 rm -f %{buildroot}/bin/base64
 
 install -m 644 -D %{SOURCE4} %{buildroot}/%{_sysconfdir}/profile.d/set_ps1.sh
