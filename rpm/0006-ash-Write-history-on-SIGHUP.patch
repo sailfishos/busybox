@@ -1,0 +1,67 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Tomi=20Lepp=C3=A4nen?= <tomi.leppanen@jolla.com>
+Date: Thu, 11 Feb 2021 18:08:59 +0200
+Subject: [PATCH] ash: Write history on SIGHUP
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+If FEATURE_EDITING_SAVE_ON_EXIT is enabled, then write history on
+SIGHUP. This should allow most terminals to save history when closing
+window. Works also on SSH connection.
+
+Signed-off-by: Tomi Leppänen <tomi.leppanen@jolla.com>
+---
+ shell/ash.c | 22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
+
+diff --git a/shell/ash.c b/shell/ash.c
+index fabecdfe0..917b93fec 100644
+--- a/shell/ash.c
++++ b/shell/ash.c
+@@ -3626,6 +3626,19 @@ signal_handler(int signo)
+ 			return;
+ 	}
+ 
++#if ENABLE_FEATURE_EDITING_SAVE_ON_EXIT
++	if (signo == SIGHUP) {
++		/*
++		 * Terminal was closed, call exitshell() to write history etc.
++		 * unless there is a trap set, in which case just save the history
++		 */
++		if (!trap[SIGHUP])
++			exitshell();
++		else if (iflag && line_input_state)
++			save_history(line_input_state);
++	}
++#endif
++
+ 	gotsig[signo - 1] = 1;
+ 	pending_sig = signo;
+ 
+@@ -3698,6 +3711,14 @@ setsignal(int signo)
+ 	if (signo == SIGCHLD)
+ 		new_act = S_CATCH;
+ 
++#if ENABLE_FEATURE_EDITING_SAVE_ON_EXIT
++	/*
++	 * Catch SIGHUP to write history on terminal close
++	 */
++	if (signo == SIGHUP && iflag)
++		new_act = S_CATCH;
++#endif
++
+ 	t = &sigmode[signo - 1];
+ 	cur_act = *t;
+ 	if (cur_act == 0) {
+@@ -9545,6 +9566,7 @@ setinteractive(int on)
+ 	setsignal(SIGINT);
+ 	setsignal(SIGQUIT);
+ 	setsignal(SIGTERM);
++	setsignal(SIGHUP);
+ 	if (is_interactive > 1) {
+ #if !ENABLE_FEATURE_SH_EXTRA_QUIET
+ 		/* Looks like they want an interactive shell */
+-- 
+2.29.2
+
