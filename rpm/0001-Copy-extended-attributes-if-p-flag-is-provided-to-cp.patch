@@ -1,4 +1,4 @@
-From 26fec4283c54d71eb96153e8e8cd0a3bf0e6dc8b Mon Sep 17 00:00:00 2001
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Kalle Jokiniemi <kalle.jokiniemi@jolla.com>
 Date: Thu, 16 Jul 2015 11:46:16 +0300
 Subject: [PATCH] Copy extended attributes if -p flag is provided to cp, mv.
@@ -23,13 +23,13 @@ Signed-off-by: Igor Zhbanov <igor.zhbanov@jolla.com>
  include/libbb.h        |   3 +
  libbb/Config.src       |   6 ++
  libbb/Kbuild.src       |   2 +
- libbb/copy_file.c      |   8 +++
+ libbb/copy_file.c      |   7 +++
  libbb/copy_file_attr.c | 125 +++++++++++++++++++++++++++++++++++++++++
- 5 files changed, 144 insertions(+)
+ 5 files changed, 143 insertions(+)
  create mode 100644 libbb/copy_file_attr.c
 
 diff --git a/include/libbb.h b/include/libbb.h
-index d4ba031df..3c257c000 100644
+index 021100db1..4cbd04382 100644
 --- a/include/libbb.h
 +++ b/include/libbb.h
 @@ -429,6 +429,9 @@ extern int remove_file(const char *path, int flags) FAST_FUNC;
@@ -67,10 +67,10 @@ index 8c9ba8cca..89be6e86d 100644
 +
 +lib-$(CONFIG_XATTR) += copy_file_attr.o
 diff --git a/libbb/copy_file.c b/libbb/copy_file.c
-index 1b8befd65..279e4a6e4 100644
+index 2d6557cd4..23bc1c0f1 100644
 --- a/libbb/copy_file.c
 +++ b/libbb/copy_file.c
-@@ -434,6 +435,13 @@ int FAST_FUNC copy_file(const char *source, const char *dest, int flags)
+@@ -434,6 +434,13 @@ int FAST_FUNC copy_file(const char *source, const char *dest, int flags)
  			source_stat.st_mode &= ~(S_ISUID | S_ISGID);
  			bb_perror_msg("can't preserve %s of '%s'", "ownership", dest);
  		}
@@ -216,5 +216,5 @@ index 000000000..180b0311e
 +	return ret;
 +}
 -- 
-2.19.1
+2.29.2
 
