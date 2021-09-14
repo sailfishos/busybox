@@ -17,12 +17,12 @@ Signed-off-by: Björn Bidar <bjorn.bidar@jolla.com>
  1 file changed, 9 insertions(+), 1 deletion(-)
 
 diff --git a/shell/ash.c b/shell/ash.c
-index 88a3ee6f8..fabecdfe0 100644
+index b336056e1..dcaec69c5 100644
 --- a/shell/ash.c
 +++ b/shell/ash.c
-@@ -72,6 +72,14 @@
+@@ -77,6 +77,14 @@
  //config:	default y
- //config:	depends on ASH || SH_IS_ASH || BASH_IS_ASH
+ //config:	depends on SHELL_ASH
  //config:
 +//config:config ASH_JOB_RESTORE_TERM_IOS
 +//config:   bool "Restore termio"
@@ -35,9 +35,9 @@ index 88a3ee6f8..fabecdfe0 100644
  //config:config ASH_ALIAS
  //config:	bool "Alias support"
  //config:	default y
-@@ -3758,7 +3766,7 @@ static struct job *curjob; //lots
- /* number of presumed living untracked jobs */
- static int jobless; //4
+@@ -3796,7 +3804,7 @@ static unsigned njobs; //4
+ /* current job */
+ static struct job *curjob; //lots
  
 -#if 0
 +#if ENABLE_ASH_JOB_RESTORE_TERM_IOS
@@ -45,5 +45,5 @@ index 88a3ee6f8..fabecdfe0 100644
   * a foreground job which had at least one stopped or sigkilled member.
   * The probable rationale is that SIGSTOP and SIGKILL can preclude task from
 -- 
-2.29.2
+2.31.1
 

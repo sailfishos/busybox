@@ -15,10 +15,10 @@ Signed-off-by: Björn Bidar <bjorn.bidar@jolla.com>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/shell/ash.c b/shell/ash.c
-index e3bbac9a0..88a3ee6f8 100644
+index a33ab0626..b336056e1 100644
 --- a/shell/ash.c
 +++ b/shell/ash.c
-@@ -14360,7 +14360,7 @@ int ash_main(int argc UNUSED_PARAM, char **argv)
+@@ -14471,7 +14471,7 @@ int ash_main(int argc UNUSED_PARAM, char **argv)
  #ifndef linux
  	 getuid() == geteuid() && getgid() == getegid() &&
  #endif
@@ -28,5 +28,5 @@ index e3bbac9a0..88a3ee6f8 100644
  		const char *shinit = lookupvar("ENV");
  		if (shinit != NULL && *shinit != '\0')
 -- 
-2.29.2
+2.31.1
 
