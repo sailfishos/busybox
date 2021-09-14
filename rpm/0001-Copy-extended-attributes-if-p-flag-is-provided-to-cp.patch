@@ -29,10 +29,10 @@ Signed-off-by: Igor Zhbanov <igor.zhbanov@jolla.com>
  create mode 100644 libbb/copy_file_attr.c
 
 diff --git a/include/libbb.h b/include/libbb.h
-index 021100db1..4cbd04382 100644
+index cae54658b..d3f67b5fb 100644
 --- a/include/libbb.h
 +++ b/include/libbb.h
-@@ -429,6 +429,9 @@ extern int remove_file(const char *path, int flags) FAST_FUNC;
+@@ -457,6 +457,9 @@ extern int remove_file(const char *path, int flags) FAST_FUNC;
   * This makes "cp /dev/null file" and "install /dev/null file" (!!!)
   * work coreutils-compatibly. */
  extern int copy_file(const char *source, const char *dest, int flags) FAST_FUNC;
@@ -43,10 +43,10 @@ index 021100db1..4cbd04382 100644
  enum {
  	ACTION_RECURSE        = (1 << 0),
 diff --git a/libbb/Config.src b/libbb/Config.src
-index 312aa1831..77e364b50 100644
+index f97de8ef7..520966791 100644
 --- a/libbb/Config.src
 +++ b/libbb/Config.src
-@@ -397,3 +397,9 @@ config FEATURE_HWIB
+@@ -395,3 +395,9 @@ config FEATURE_HWIB
  	default y
  	help
  	Support for printing infiniband addresses in network applets.
@@ -57,17 +57,17 @@ index 312aa1831..77e364b50 100644
 +	help
 +	  Support preserve extended attributes for cp and mv command.
 diff --git a/libbb/Kbuild.src b/libbb/Kbuild.src
-index 8c9ba8cca..89be6e86d 100644
+index 676300801..bb5ecb9ef 100644
 --- a/libbb/Kbuild.src
 +++ b/libbb/Kbuild.src
-@@ -198,3 +198,5 @@ lib-$(CONFIG_FEATURE_FIND_REGEX) += xregcomp.o
+@@ -199,3 +199,5 @@ lib-$(CONFIG_FEATURE_FIND_REGEX) += xregcomp.o
  
  # Add the experimental logging functionality, only used by zcip
  lib-$(CONFIG_ZCIP) += logenv.o
 +
 +lib-$(CONFIG_XATTR) += copy_file_attr.o
 diff --git a/libbb/copy_file.c b/libbb/copy_file.c
-index 2d6557cd4..23bc1c0f1 100644
+index 49d1ec9c6..0f64a1e31 100644
 --- a/libbb/copy_file.c
 +++ b/libbb/copy_file.c
 @@ -434,6 +434,13 @@ int FAST_FUNC copy_file(const char *source, const char *dest, int flags)
@@ -216,5 +216,5 @@ index 000000000..180b0311e
 +	return ret;
 +}
 -- 
-2.29.2
+2.31.1
 

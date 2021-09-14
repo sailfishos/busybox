@@ -12,14 +12,14 @@ window. Works also on SSH connection.
 
 Signed-off-by: Tomi Leppänen <tomi.leppanen@jolla.com>
 ---
- shell/ash.c | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+ shell/ash.c | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
 diff --git a/shell/ash.c b/shell/ash.c
-index fabecdfe0..917b93fec 100644
+index dcaec69c5..019182f57 100644
 --- a/shell/ash.c
 +++ b/shell/ash.c
-@@ -3626,6 +3626,19 @@ signal_handler(int signo)
+@@ -3666,6 +3666,19 @@ signal_handler(int signo)
  			return;
  	}
  
@@ -31,22 +31,20 @@ index fabecdfe0..917b93fec 100644
 +		 */
 +		if (!trap[SIGHUP])
 +			exitshell();
-+		else if (iflag && line_input_state)
-+			save_history(line_input_state);
++		else if (iflag)
++			save_history(line_input_state); /* may be NULL */
 +	}
 +#endif
 +
  	gotsig[signo - 1] = 1;
  	pending_sig = signo;
  
-@@ -3698,6 +3711,14 @@ setsignal(int signo)
+@@ -3738,6 +3751,12 @@ setsignal(int signo)
  	if (signo == SIGCHLD)
  		new_act = S_CATCH;
  
 +#if ENABLE_FEATURE_EDITING_SAVE_ON_EXIT
-+	/*
-+	 * Catch SIGHUP to write history on terminal close
-+	 */
++	/* catch SIGHUP to write history on terminal close */
 +	if (signo == SIGHUP && iflag)
 +		new_act = S_CATCH;
 +#endif
@@ -54,7 +52,7 @@ index fabecdfe0..917b93fec 100644
  	t = &sigmode[signo - 1];
  	cur_act = *t;
  	if (cur_act == 0) {
-@@ -9545,6 +9566,7 @@ setinteractive(int on)
+@@ -9588,6 +9607,7 @@ setinteractive(int on)
  	setsignal(SIGINT);
  	setsignal(SIGQUIT);
  	setsignal(SIGTERM);
@@ -63,5 +61,5 @@ index fabecdfe0..917b93fec 100644
  #if !ENABLE_FEATURE_SH_EXTRA_QUIET
  		/* Looks like they want an interactive shell */
 -- 
-2.29.2
+2.31.1
 

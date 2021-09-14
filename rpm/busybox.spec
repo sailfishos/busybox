@@ -1,6 +1,6 @@
 Summary: Single binary providing simplified versions of system commands
 Name: busybox
-Version: 1.31.0
+Version: 1.33.1
 Release: 1
 License: GPLv2
 Source0: http://www.busybox.net/downloads/%{name}-%{version}.tar.bz2
@@ -14,7 +14,7 @@ Patch2:  0003-Align-watch-with-what-is-in-procps-ng.patch
 Patch3:  0004-ash-Load-ENV-file-also-if-SSH_CLIENT-SSH2_CLIENT-is-.patch
 Patch4:  0005-ash-job-option-to-restore-term-io-after-job-is-stopp.patch
 Patch5:  0006-ash-Write-history-on-SIGHUP.patch
-URL: https://git.sailfishos.org/mer-core/busybox
+URL: https://github.com/sailfishos/busybox
 BuildRequires: glibc-static
 BuildRequires: libselinux-static libsepol-static
 BuildRequires: pcre-static
@@ -32,14 +32,11 @@ Provides: iputils > 20101006
 
 %description
 Busybox is a single binary which includes versions of a large number
-of system commands, including a shell.  This package can be very
-useful for recovering from certain types of system failures,
-particularly those involving broken shared libraries.
+of system commands, including a shell.
 
 %package doc
 Summary: Documentation for %{name}
 Requires: %{name} = %{version}-%{release}
-Obsoletes: %{name}-docs
 
 %description doc
 Busybox user guide.
@@ -49,10 +46,10 @@ Summary: Statically linked version of busybox
 
 %description static
 Busybox is a single binary which includes versions of a large number
-of system commands, including a shell.  This package can be very
+of system commands, including a shell. This package can be very
 useful for recovering from certain types of system failures,
-particularly those involving broken shared libraries. This package provides
-a statically linked version of Busybox.
+particularly those involving broken shared libraries. This package
+provides a statically linked version of Busybox.
 
 %package symlinks-bash
 Requires: %{name} = %{version}-%{release}
@@ -252,6 +249,7 @@ cat >> busybox.links << EOF
 /bin/cut
 /bin/env
 /bin/sort
+%{_bindir}/base32
 %{_bindir}/base64
 %{_bindir}/cat
 %{_bindir}/chgrp
@@ -302,6 +300,7 @@ install -m 644 -D %{SOURCE1} %{buildroot}%{_unitdir}/udhcpd.service
 applets/install.sh %{buildroot} --symlinks
 # Cleanup some symlinks
 rm -f %{buildroot}/sbin/udhcpc
+rm -f %{buildroot}/bin/base32
 rm -f %{buildroot}/bin/base64
 
 install -m 644 -D %{SOURCE4} %{buildroot}/%{_sysconfdir}/profile.d/set_ps1.sh
@@ -384,6 +383,7 @@ rm -f %{buildroot}/bin/pidof
 /bin/uname
 %{_bindir}/[
 %{_bindir}/[[
+%{_bindir}/base32
 %{_bindir}/base64
 %{_bindir}/basename
 %{_bindir}/cat
