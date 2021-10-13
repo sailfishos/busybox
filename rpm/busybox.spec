@@ -18,7 +18,7 @@ URL: https://github.com/sailfishos/busybox
 BuildRequires: glibc-static
 BuildRequires: libselinux-static libsepol-static
 BuildRequires: pcre-static
-BuildRequires: systemd
+BuildRequires: pkgconfig(systemd)
 BuildRequires: sed
 
 Obsoletes: time <= 1.7
