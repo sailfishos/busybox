@@ -28,6 +28,8 @@ Provides: time > 1.7
 Obsoletes: iputils <= 20101006
 Provides: iputils > 20101006
 
+Obsoletes: busybox-symlinks-cpio <= 1.33.1+git2
+
 %define debug_package %{nil}
 
 %description
