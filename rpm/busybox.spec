@@ -15,7 +15,7 @@ Patch3:  0004-ash-Load-ENV-file-also-if-SSH_CLIENT-SSH2_CLIENT-is-.patch
 Patch4:  0005-ash-job-option-to-restore-term-io-after-job-is-stopp.patch
 Patch5:  0006-ash-Write-history-on-SIGHUP.patch
 URL: https://github.com/sailfishos/busybox
-BuildRequires: glibc-static
+BuildRequires: glibc-static libxcrypt-static
 BuildRequires: libselinux-static libsepol-static
 BuildRequires: pcre-static
 BuildRequires: pkgconfig(systemd)
@@ -215,7 +215,7 @@ Obsoletes: psmisc < 22.13+git1
 # currently the features differ quite a bit
 cp %{SOURCE2} .config
 yes "" | make oldconfig
-%make_build CRYPT_AVAILABLE=n
+%make_build
 cp busybox busybox-static
 
 # clean any leftovers from static build
