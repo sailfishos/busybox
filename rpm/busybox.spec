@@ -1,6 +1,6 @@
 Summary: Single binary providing simplified versions of system commands
 Name: busybox
-Version: 1.33.1
+Version: 1.34.1
 Release: 1
 License: GPLv2
 Source0: http://www.busybox.net/downloads/%{name}-%{version}.tar.bz2
@@ -215,7 +215,7 @@ Obsoletes: psmisc < 22.13+git1
 # currently the features differ quite a bit
 cp %{SOURCE2} .config
 yes "" | make oldconfig
-%make_build
+%make_build CRYPT_AVAILABLE=n
 cp busybox busybox-static
 
 # clean any leftovers from static build
@@ -226,7 +226,7 @@ make distclean
 cp %{SOURCE3} .config
 
 yes "" | make oldconfig
-make %{_smp_mflags}
+%make_build
 make busybox.links
 # /bin links are legacy, use /usr/bin whenever you can
 cat >> busybox.links << EOF
