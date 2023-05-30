@@ -8,7 +8,7 @@ Subject: [PATCH] applets: Busybox in /usr/bin instead of /bin
  1 file changed, 12 insertions(+), 12 deletions(-)
 
 diff --git a/applets/install.sh b/applets/install.sh
-index 415896893..04f0526c8 100755
+index 415896893e8626ec26f6790bdffdf5adc7581331..04f0526c88ecbbd135a39a29487b254cb521b8a1 100755
 --- a/applets/install.sh
 +++ b/applets/install.sh
 @@ -60,8 +60,8 @@ if [ -n "$DO_INSTALL_LIBS" ] && [ x"$DO_INSTALL_LIBS" != x"n" ]; then
@@ -71,6 +71,3 @@ index 415896893..04f0526c8 100755
  			;;
  			*)
  				echo "Unknown installation directory: $appdir"
--- 
-2.31.1
-

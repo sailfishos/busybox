@@ -1,6 +1,6 @@
 Summary: Single binary providing simplified versions of system commands
 Name: busybox
-Version: 1.34.1
+Version: 1.36.1
 Release: 1
 License: GPLv2
 Source0: http://www.busybox.net/downloads/%{name}-%{version}.tar.bz2
