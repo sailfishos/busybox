@@ -8,7 +8,7 @@ Subject: [PATCH] Align watch with what is in procps-ng
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/procps/watch.c b/procps/watch.c
-index 059eb1dda..3ea55fd81 100644
+index 1190b29df17f252697c46e0e8d78d9664053ef52..e6b1146f9c4017900a4e8e808b38a2256c490145 100644
 --- a/procps/watch.c
 +++ b/procps/watch.c
 @@ -14,7 +14,7 @@
@@ -20,6 +20,3 @@ index 059eb1dda..3ea55fd81 100644
  
  //kbuild:lib-$(CONFIG_WATCH) += watch.o
  
--- 
-2.31.1
-

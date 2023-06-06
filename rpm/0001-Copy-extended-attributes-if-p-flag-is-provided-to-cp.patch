@@ -29,10 +29,10 @@ Signed-off-by: Igor Zhbanov <igor.zhbanov@jolla.com>
  create mode 100644 libbb/copy_file_attr.c
 
 diff --git a/include/libbb.h b/include/libbb.h
-index cae54658b..d3f67b5fb 100644
+index cca33a177faba9669eb1c2499c50663ca883385c..c03712e1f6071071a04710c6fb8ab78ede19d90e 100644
 --- a/include/libbb.h
 +++ b/include/libbb.h
-@@ -457,6 +457,9 @@ extern int remove_file(const char *path, int flags) FAST_FUNC;
+@@ -506,6 +506,9 @@ extern int remove_file(const char *path, int flags) FAST_FUNC;
   * This makes "cp /dev/null file" and "install /dev/null file" (!!!)
   * work coreutils-compatibly. */
  extern int copy_file(const char *source, const char *dest, int flags) FAST_FUNC;
@@ -43,13 +43,13 @@ index cae54658b..d3f67b5fb 100644
  enum {
  	ACTION_RECURSE        = (1 << 0),
 diff --git a/libbb/Config.src b/libbb/Config.src
-index f97de8ef7..520966791 100644
+index b980f19a92738dc6a7a1174e1ddb2d271c32d04a..b4bddbe5840cd8ea2ad254393f517209da0bd9a4 100644
 --- a/libbb/Config.src
 +++ b/libbb/Config.src
-@@ -395,3 +395,9 @@ config FEATURE_HWIB
- 	default y
- 	help
- 	Support for printing infiniband addresses in network applets.
+@@ -391,3 +391,9 @@ config TRY_LOOP_CONFIGURE
+ 	bool "try LOOP_CONFIGURE, fall back to LOOP_SET_FD + LOOP_SET_STATUS"
+ 
+ endchoice
 +
 +config XATTR
 +	bool "Support preserve extended attributes for cp command"
@@ -57,20 +57,20 @@ index f97de8ef7..520966791 100644
 +	help
 +	  Support preserve extended attributes for cp and mv command.
 diff --git a/libbb/Kbuild.src b/libbb/Kbuild.src
-index 676300801..bb5ecb9ef 100644
+index 653025e56c76c3b8e44f4b15ac4d6b7d0cf8d70f..220240b99679f7cba4990242b2233a4d845139c3 100644
 --- a/libbb/Kbuild.src
 +++ b/libbb/Kbuild.src
-@@ -199,3 +199,5 @@ lib-$(CONFIG_FEATURE_FIND_REGEX) += xregcomp.o
+@@ -206,3 +206,5 @@ lib-$(CONFIG_FEATURE_CUT_REGEX) += xregcomp.o
  
  # Add the experimental logging functionality, only used by zcip
  lib-$(CONFIG_ZCIP) += logenv.o
 +
 +lib-$(CONFIG_XATTR) += copy_file_attr.o
 diff --git a/libbb/copy_file.c b/libbb/copy_file.c
-index 49d1ec9c6..0f64a1e31 100644
+index 044bc3c20843fa21dc6c8af468326e6a39ce595b..1327fc9df0725d49389eac591bd6ba7e2007274a 100644
 --- a/libbb/copy_file.c
 +++ b/libbb/copy_file.c
-@@ -434,6 +434,13 @@ int FAST_FUNC copy_file(const char *source, const char *dest, int flags)
+@@ -436,6 +436,13 @@ int FAST_FUNC copy_file(const char *source, const char *dest, int flags)
  			source_stat.st_mode &= ~(S_ISUID | S_ISGID);
  			bb_perror_msg("can't preserve %s of '%s'", "ownership", dest);
  		}
@@ -86,7 +86,7 @@ index 49d1ec9c6..0f64a1e31 100644
  	}
 diff --git a/libbb/copy_file_attr.c b/libbb/copy_file_attr.c
 new file mode 100644
-index 000000000..180b0311e
+index 0000000000000000000000000000000000000000..180b0311e6e3665204d02b29373a77f32321177c
 --- /dev/null
 +++ b/libbb/copy_file_attr.c
 @@ -0,0 +1,125 @@
@@ -215,6 +215,3 @@ index 000000000..180b0311e
 +	bb_free(names);
 +	return ret;
 +}
--- 
-2.31.1
-

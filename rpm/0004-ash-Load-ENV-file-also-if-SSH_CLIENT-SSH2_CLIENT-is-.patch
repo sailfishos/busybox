@@ -11,22 +11,18 @@ This emulates the behavior of bash loading .bashrc when $SSH_CLIENT or $SSH2_CLI
 
 Signed-off-by: Björn Bidar <bjorn.bidar@jolla.com>
 ---
- shell/ash.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ shell/ash.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/shell/ash.c b/shell/ash.c
-index a33ab0626..b336056e1 100644
+index 9344e4de1729c464af04d70754b2511af7af0cbe..cb2d4d4c3112ba5e8c4f846a217a21fce49d8b7c 100644
 --- a/shell/ash.c
 +++ b/shell/ash.c
-@@ -14471,7 +14471,7 @@ int ash_main(int argc UNUSED_PARAM, char **argv)
+@@ -14726,6 +14726,7 @@ int ash_main(int argc UNUSED_PARAM, char **argv)
  #ifndef linux
- 	 getuid() == geteuid() && getgid() == getegid() &&
+ 	 && getuid() == geteuid() && getgid() == getegid()
  #endif
--	 iflag
-+	 iflag || ( minusc && ( lookupvar("SSH_CLIENT") != NULL || lookupvar("SSH2_CLIENT") != NULL)) && rootshell
++	 || ( minusc && ( lookupvar("SSH_CLIENT") != NULL || lookupvar("SSH2_CLIENT") != NULL)) && rootshell
  	) {
  		const char *shinit = lookupvar("ENV");
  		if (shinit != NULL && *shinit != '\0')
--- 
-2.31.1
-
