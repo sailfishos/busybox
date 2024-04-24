@@ -14,6 +14,7 @@ Patch2:  0003-Align-watch-with-what-is-in-procps-ng.patch
 Patch3:  0004-ash-Load-ENV-file-also-if-SSH_CLIENT-SSH2_CLIENT-is-.patch
 Patch4:  0005-ash-job-option-to-restore-term-io-after-job-is-stopp.patch
 Patch5:  0006-ash-Write-history-on-SIGHUP.patch
+Patch6:  0007-shell-fix-SIGWINCH-and-SIGCHLD-in-hush-interrupting-.patch
 URL: https://github.com/sailfishos/busybox
 BuildRequires: glibc-static
 BuildRequires: libselinux-static libsepol-static
