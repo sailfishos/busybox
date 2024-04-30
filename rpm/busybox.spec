@@ -8,13 +8,13 @@ Source1: rpm/udhcpd.service
 Source2: busybox-static.config
 Source3: busybox-sailfish.config
 Source4: set_ps1.sh
-Patch0:  0001-Copy-extended-attributes-if-p-flag-is-provided-to-cp.patch
+#Patch0:  0001-Copy-extended-attributes-if-p-flag-is-provided-to-cp.patch
 Patch1:  0002-applets-Busybox-in-usr-bin-instead-of-bin.patch
 Patch2:  0003-Align-watch-with-what-is-in-procps-ng.patch
 Patch3:  0004-ash-Load-ENV-file-also-if-SSH_CLIENT-SSH2_CLIENT-is-.patch
 Patch4:  0005-ash-job-option-to-restore-term-io-after-job-is-stopp.patch
-Patch5:  0006-ash-Write-history-on-SIGHUP.patch
-Patch6:  0007-shell-fix-SIGWINCH-and-SIGCHLD-in-hush-interrupting-.patch
+#Patch5:  0006-ash-Write-history-on-SIGHUP.patch
+#Patch6:  0007-shell-fix-SIGWINCH-and-SIGCHLD-in-hush-interrupting-.patch
 URL: https://github.com/sailfishos/busybox
 BuildRequires: glibc-static
 BuildRequires: libselinux-static libsepol-static
