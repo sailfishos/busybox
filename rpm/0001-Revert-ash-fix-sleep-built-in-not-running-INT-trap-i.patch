@@ -1,0 +1,42 @@
+From 63319a62982e3ac6359af516860f7bbfa0f81e89 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Bj=C3=B6rn=20Bidar?= <bjorn.bidar@jolla.com>
+Date: Mon, 9 Sep 2024 11:06:11 +0300
+Subject: [PATCH] Revert "ash: fix sleep built-in not running INT trap
+ immediately on ^C"
+
+This reverts commit ce839dea92ce10627094096835e831bf5d267631.
+---
+ libbb/duration.c | 16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
+
+diff --git a/libbb/duration.c b/libbb/duration.c
+index 0024f1a66..793d02f42 100644
+--- a/libbb/duration.c
++++ b/libbb/duration.c
+@@ -76,14 +76,16 @@ void FAST_FUNC sleep_for_duration(duration_t duration)
+ 		ts.tv_sec = duration;
+ 		ts.tv_nsec = (duration - ts.tv_sec) * 1000000000;
+ 	}
+-	/* NB: ENABLE_ASH_SLEEP requires that we do NOT loop on EINTR here:
+-	 * otherwise, traps won't execute until we finish looping.
++	/* NB: if ENABLE_ASH_SLEEP, we end up here if "sleep N"
++	 * is run in ash. ^C will still work, because ash's signal handler
++	 * does not return (it longjumps), the below loop
++	 * will not continue looping.
++	 * (This wouldn't work in hush)
+ 	 */
+-	//do {
+-	//	errno = 0;
+-	//	nanosleep(&ts, &ts);
+-	//} while (errno == EINTR);
+-	nanosleep(&ts, &ts);
++	do {
++		errno = 0;
++		nanosleep(&ts, &ts);
++	} while (errno == EINTR);
+ }
+ #else
+ duration_t FAST_FUNC parse_duration_str(char *str)
+-- 
+2.45.2
+
