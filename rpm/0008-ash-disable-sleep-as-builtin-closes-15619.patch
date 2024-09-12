@@ -1,0 +1,72 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Denys Vlasenko <vda.linux@googlemail.com>
+Date: Mon, 10 Jul 2023 10:52:41 +0200
+Subject: [PATCH] ash: disable sleep as builtin, closes 15619
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Has a few annoying problems:
+* sleepcmd() -> sleep_main(), the parsing of bad arguments exits the shell.
+* sleep_for_duration() in sleep_main() has to be interruptible for
+  ^C traps to work, which may be a problem for other users
+  of sleep_for_duration().
+* BUT, if sleep_for_duration() is interruptible, then SIGCHLD interrupts it
+  as well (try "/bin/sleep 1 & sleep 10").
+* sleep_main() must not allocate anything as ^C in ash longjmp's.
+  (currently, allocations are only on error paths, in message printing).
+
+Signed-off-by: Denys Vlasenko <vda.linux@googlemail.com>
+(cherry picked from commit 5e0411a7fb510b9aecda0a850c76bdd62c50efa4)
+Signed-off-by: Björn Bidar <bjorn.bidar@jolla.com>
+---
+ include/libbb.h |  2 ++
+ shell/ash.c     | 22 +++++++++++++++++-----
+ 2 files changed, 19 insertions(+), 5 deletions(-)
+
+diff --git a/include/libbb.h b/include/libbb.h
+index c03712e1f6071071a04710c6fb8ab78ede19d90e..f22f19d45eb6ac206cbcb7c63b24472ca636e991 100644
+--- a/include/libbb.h
++++ b/include/libbb.h
+@@ -1514,6 +1514,8 @@ int hush_main(int argc, char** argv) IF_SHELL_HUSH(MAIN_EXTERNALLY_VISIBLE);
+ /* If shell needs them, they exist even if not enabled as applets */
+ int echo_main(int argc, char** argv) IF_ECHO(MAIN_EXTERNALLY_VISIBLE);
+ int sleep_main(int argc, char **argv) IF_SLEEP(MAIN_EXTERNALLY_VISIBLE);
++/* See disabled "config ASH_SLEEP" in ash.c */
++#define ENABLE_ASH_SLEEP 0
+ int printf_main(int argc, char **argv) IF_PRINTF(MAIN_EXTERNALLY_VISIBLE);
+ int test_main(int argc, char **argv)
+ #if ENABLE_TEST || ENABLE_TEST1 || ENABLE_TEST2
+diff --git a/shell/ash.c b/shell/ash.c
+index 558bd58848d13fa8749b4a6ad3c1014d5994dae4..643eef9b0e07fdece43f8f5f7afbcf4eac2b1cfb 100644
+--- a/shell/ash.c
++++ b/shell/ash.c
+@@ -142,11 +142,23 @@
+ //config:	default y
+ //config:	depends on SHELL_ASH
+ //config:
+-//config:config ASH_SLEEP
+-//config:	bool "sleep builtin"
+-//config:	default y
+-//config:	depends on SHELL_ASH
+-//config:
++//
++////config:config ASH_SLEEP
++////config:	bool "sleep builtin"
++////config:	default y
++////config:	depends on SHELL_ASH
++////config:
++//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
++//Disabled for now. Has a few annoying problems:
++// * sleepcmd() -> sleep_main(), the parsing of bad arguments exits the shell.
++// * sleep_for_duration() in sleep_main() has to be interruptible for
++//   ^C traps to work, which may be a problem for other users
++//   of sleep_for_duration().
++// * BUT, if sleep_for_duration() is interruptible, then SIGCHLD interrupts it
++//   as well (try "/bin/sleep 1 & sleep 10").
++// * sleep_main() must not allocate anything as ^C in ash longjmp's.
++//   (currently, allocations are only on error paths, in message printing).
++//
+ //config:config ASH_HELP
+ //config:	bool "help builtin"
+ //config:	default y
