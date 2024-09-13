@@ -15,7 +15,7 @@ Signed-off-by: Björn Bidar <bjorn.bidar@jolla.com>
  1 file changed, 1 insertion(+)
 
 diff --git a/shell/ash.c b/shell/ash.c
-index 9344e4de1729c464af04d70754b2511af7af0cbe..cb2d4d4c3112ba5e8c4f846a217a21fce49d8b7c 100644
+index 9344e4de1729c464af04d70754b2511af7af0cbe..049089677f8098cde55da7ef76dce72fe3408495 100644
 --- a/shell/ash.c
 +++ b/shell/ash.c
 @@ -14726,6 +14726,7 @@ int ash_main(int argc UNUSED_PARAM, char **argv)

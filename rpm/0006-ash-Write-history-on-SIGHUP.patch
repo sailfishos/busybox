@@ -16,7 +16,7 @@ Signed-off-by: Tomi Leppänen <tomi.leppanen@jolla.com>
  1 file changed, 20 insertions(+)
 
 diff --git a/shell/ash.c b/shell/ash.c
-index 9f07632f6ce16b8b3d144470f1c37bc4b0035779..79c30d4c9dad76a7963d89742e6a496891b398cf 100644
+index fad94fdb2b2a436f29fc56e87fbe7d5bf6fbac1d..d81c1354a370c138548d9482afd38baff4a189e6 100644
 --- a/shell/ash.c
 +++ b/shell/ash.c
 @@ -3692,6 +3692,19 @@ signal_handler(int signo)

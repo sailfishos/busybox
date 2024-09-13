@@ -17,7 +17,7 @@ Signed-off-by: Björn Bidar <bjorn.bidar@jolla.com>
  1 file changed, 9 insertions(+), 1 deletion(-)
 
 diff --git a/shell/ash.c b/shell/ash.c
-index cb2d4d4c3112ba5e8c4f846a217a21fce49d8b7c..9f07632f6ce16b8b3d144470f1c37bc4b0035779 100644
+index 049089677f8098cde55da7ef76dce72fe3408495..fad94fdb2b2a436f29fc56e87fbe7d5bf6fbac1d 100644
 --- a/shell/ash.c
 +++ b/shell/ash.c
 @@ -77,6 +77,14 @@
