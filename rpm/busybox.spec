@@ -377,7 +377,6 @@ rm -f %{buildroot}/bin/pidof
 /bin/nice
 /bin/printenv
 /bin/pwd
-/bin/realpath
 /bin/rm
 /bin/rmdir
 /bin/sleep
