@@ -277,6 +277,7 @@ cat >> busybox.links << EOF
 %{_bindir}/printenv
 %{_bindir}/ps
 %{_bindir}/pwd
+%{_bindir}/realpath
 %{_bindir}/rm
 %{_bindir}/rmdir
 %{_bindir}/sed
@@ -376,6 +377,7 @@ rm -f %{buildroot}/bin/pidof
 /bin/nice
 /bin/printenv
 /bin/pwd
+/bin/realpath
 /bin/rm
 /bin/rmdir
 /bin/sleep
@@ -435,6 +437,7 @@ rm -f %{buildroot}/bin/pidof
 %{_bindir}/printf
 %{_bindir}/pwd
 %{_bindir}/readlink
+%{_bindir}/realpath
 %{_bindir}/rm
 %{_bindir}/rmdir
 %{_bindir}/seq
