@@ -67,6 +67,17 @@ Provides: bash = 1:3.2.57+git1
 %{summary} as symlinks. Provides ash with sh and bash symlinks as
 a mostly compatible alternative to GNU Bash.
 
+%package symlinks-bc
+Requires: %{name} = %{version}-%{release}
+Summary: Busybox replacement for bc
+Conflicts: bc <= 1.06.95
+Obsoletes: bc <= 1.06.95
+Provides: bc = 1.06.95-1
+
+%description symlinks-bc
+%{summary} as symlinks. Provides bc and dc symlinks as
+a mostly compatible alternative to GNU Bc.
+
 %package symlinks-coreutils
 Requires: %{name} = %{version}-%{release}
 Summary: Busybox replacements for coreutils
@@ -251,6 +262,8 @@ cat >> busybox.links << EOF
 %{_bindir}/tar
 %{_bindir}/vi
 /bin/basename
+/bin/bc
+/bin/dc
 /bin/cut
 /bin/env
 /bin/sort
@@ -351,6 +364,13 @@ rm -f %{buildroot}/bin/pidof
 %{_bindir}/bash
 %{_bindir}/sh
 %{_sysconfdir}/profile.d/set_ps1.sh
+
+%files symlinks-bc
+%defattr(-,root,root,-)
+/bin/bc
+/bin/dc
+%{_bindir}/bc
+%{_bindir}/dc
 
 %files symlinks-coreutils
 %defattr(-,root,root,-)
