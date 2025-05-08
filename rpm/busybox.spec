@@ -20,7 +20,7 @@ Patch7:  0008-ash-disable-sleep-as-builtin-closes-15619.patch
 URL: https://github.com/sailfishos/busybox
 BuildRequires: glibc-static
 BuildRequires: libselinux-static libsepol-static
-BuildRequires: pcre-static
+BuildRequires: pcre2-static
 BuildRequires: pkgconfig(systemd)
 BuildRequires: sed
 
