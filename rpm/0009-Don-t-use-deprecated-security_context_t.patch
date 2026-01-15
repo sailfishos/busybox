@@ -1,0 +1,383 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Matti Viljanen <matti.viljanen@jolla.com>
+Date: Mon, 12 Jan 2026 16:28:58 +0200
+Subject: [PATCH] Don't use deprecated security_context_t
+
+This was deprecated in SELinux back in 2020:
+https://github.com/SELinuxProject/selinux/commit/9eb9c9327563014ad6a807814e7975424642d5b9
+https://github.com/SELinuxProject/selinux/commit/7a124ca2758136f49cc38efc26fb1a2d385ecfd9
+---
+ coreutils/id.c                              |  2 +-
+ coreutils/install.c                         |  4 ++--
+ coreutils/libcoreutils/getopt_mk_fifo_nod.c |  2 +-
+ coreutils/ls.c                              |  2 +-
+ coreutils/mkdir.c                           |  2 +-
+ coreutils/stat.c                            | 12 ++++++------
+ findutils/find.c                            |  4 ++--
+ include/libbb.h                             |  6 +++---
+ libbb/copy_file.c                           |  4 ++--
+ libbb/run_shell.c                           |  4 ++--
+ libbb/selinux_common.c                      |  6 +++---
+ libbb/update_passwd.c                       |  2 +-
+ loginutils/login.c                          |  6 +++---
+ selinux/chcon.c                             |  4 ++--
+ selinux/matchpathcon.c                      |  2 +-
+ selinux/runcon.c                            |  4 ++--
+ selinux/sestatus.c                          |  2 +-
+ util-linux/mkswap.c                         |  4 ++--
+ 18 files changed, 36 insertions(+), 36 deletions(-)
+
+diff --git a/coreutils/id.c b/coreutils/id.c
+index 18bda3c55..8959f255c 100644
+--- a/coreutils/id.c
++++ b/coreutils/id.c
+@@ -156,7 +156,7 @@ int id_main(int argc UNUSED_PARAM, char **argv)
+ 	const char *prefix;
+ 	const char *username;
+ #if ENABLE_SELINUX
+-	security_context_t scontext = NULL;
++	char *scontext = NULL;
+ #endif
+ 
+ 	if (ENABLE_GROUPS && (!ENABLE_ID || applet_name[0] == 'g')) {
+diff --git a/coreutils/install.c b/coreutils/install.c
+index c0f1c538a..c8f1ead18 100644
+--- a/coreutils/install.c
++++ b/coreutils/install.c
+@@ -73,7 +73,7 @@ static const char install_longopts[] ALIGN1 =
+ static void setdefaultfilecon(const char *path)
+ {
+ 	struct stat s;
+-	security_context_t scontext = NULL;
++	char *scontext = NULL;
+ 
+ 	if (!is_selinux_enabled()) {
+ 		return;
+@@ -119,7 +119,7 @@ int install_main(int argc, char **argv)
+ 	int ret = EXIT_SUCCESS;
+ 	int isdir;
+ #if ENABLE_SELINUX
+-	security_context_t scontext;
++	char *scontext;
+ 	bool use_default_selinux_context = 1;
+ #endif
+ 	enum {
+diff --git a/coreutils/libcoreutils/getopt_mk_fifo_nod.c b/coreutils/libcoreutils/getopt_mk_fifo_nod.c
+index dafe70edf..938adef18 100644
+--- a/coreutils/libcoreutils/getopt_mk_fifo_nod.c
++++ b/coreutils/libcoreutils/getopt_mk_fifo_nod.c
+@@ -26,7 +26,7 @@ mode_t FAST_FUNC getopt_mk_fifo_nod(char **argv)
+ 	mode_t mode = 0666;
+ 	char *smode = NULL;
+ #if ENABLE_SELINUX
+-	security_context_t scontext;
++	char *scontext;
+ #endif
+ 	int opt;
+ 	opt = getopt32(argv, "m:" IF_SELINUX("Z:"), &smode IF_SELINUX(,&scontext));
+diff --git a/coreutils/ls.c b/coreutils/ls.c
+index b69b80460..8950e179f 100644
+--- a/coreutils/ls.c
++++ b/coreutils/ls.c
+@@ -283,7 +283,7 @@ struct dnode {
+ 	const char *name;       /* usually basename, but think "ls -l dir/file" */
+ 	const char *fullname;   /* full name (usable for stat etc) */
+ 	struct dnode *dn_next;  /* for linked list */
+-	IF_SELINUX(security_context_t sid;)
++	IF_SELINUX(char *sid;)
+ 	smallint fname_allocated;
+ 
+ 	/* Used to avoid re-doing [l]stat at printout stage
+diff --git a/coreutils/mkdir.c b/coreutils/mkdir.c
+index d5e0f512b..edb3099c6 100644
+--- a/coreutils/mkdir.c
++++ b/coreutils/mkdir.c
+@@ -57,7 +57,7 @@ int mkdir_main(int argc UNUSED_PARAM, char **argv)
+ 	unsigned opt;
+ 	char *smode;
+ #if ENABLE_SELINUX
+-	security_context_t scontext;
++	char *scontext;
+ #endif
+ 
+ 	opt = getopt32long(argv, "m:pv" IF_SELINUX("Z:"),
+diff --git a/coreutils/stat.c b/coreutils/stat.c
+index 2c2909e7e..8efeae1e1 100644
+--- a/coreutils/stat.c
++++ b/coreutils/stat.c
+@@ -258,7 +258,7 @@ static void printfs(char *pformat, const char *msg)
+ /* print statfs info */
+ static void FAST_FUNC print_statfs(char *pformat, const char m,
+ 		const char *const filename, const void *data
+-		IF_SELINUX(, security_context_t scontext))
++		IF_SELINUX(, char *scontext))
+ {
+ 	const struct statfs *statfsbuf = data;
+ 	if (m == 'n') {
+@@ -306,7 +306,7 @@ static void FAST_FUNC print_statfs(char *pformat, const char m,
+ /* print stat info */
+ static void FAST_FUNC print_stat(char *pformat, const char m,
+ 		const char *const filename, const void *data
+-		IF_SELINUX(, security_context_t scontext))
++		IF_SELINUX(, char *scontext))
+ {
+ #define TYPE_SIGNED(t) (! ((t) 0 < (t) -1))
+ 	struct stat *statbuf = (struct stat *) data;
+@@ -408,9 +408,9 @@ static void FAST_FUNC print_stat(char *pformat, const char m,
+ 
+ static void print_it(const char *masterformat,
+ 		const char *filename,
+-		void FAST_FUNC (*print_func)(char*, char, const char*, const void* IF_SELINUX(, security_context_t scontext)),
++		void FAST_FUNC (*print_func)(char*, char, const char*, const void* IF_SELINUX(, char *scontext)),
+ 		const void *data
+-		IF_SELINUX(, security_context_t scontext))
++		IF_SELINUX(, char *scontext))
+ {
+ 	/* Create a working copy of the format string */
+ 	char *format = xstrdup(masterformat);
+@@ -475,7 +475,7 @@ static bool do_statfs(const char *filename, const char *format)
+ 	const char *format;
+ #endif
+ #if ENABLE_SELINUX
+-	security_context_t scontext = NULL;
++	char *scontext = NULL;
+ 
+ 	if (option_mask32 & OPT_SELINUX) {
+ 		if ((option_mask32 & OPT_DEREFERENCE
+@@ -590,7 +590,7 @@ static bool do_stat(const char *filename, const char *format)
+ {
+ 	struct stat statbuf;
+ #if ENABLE_SELINUX
+-	security_context_t scontext = NULL;
++	char *scontext = NULL;
+ 
+ 	if (option_mask32 & OPT_SELINUX) {
+ 		if ((option_mask32 & OPT_DEREFERENCE
+diff --git a/findutils/find.c b/findutils/find.c
+index bb6ad31e5..5024c869b 100644
+--- a/findutils/find.c
++++ b/findutils/find.c
+@@ -457,7 +457,7 @@ IF_FEATURE_FIND_INUM(   ACTS(inum,  ino_t inode_num;))
+ IF_FEATURE_FIND_SAMEFILE(ACTS(samefile, ino_t inode_num; dev_t device;))
+ IF_FEATURE_FIND_USER(   ACTS(user,  uid_t uid;))
+ IF_FEATURE_FIND_SIZE(   ACTS(size,  char size_char; off_t size;))
+-IF_FEATURE_FIND_CONTEXT(ACTS(context, security_context_t context;))
++IF_FEATURE_FIND_CONTEXT(ACTS(context, char *context;))
+ IF_FEATURE_FIND_PAREN(  ACTS(paren, action ***subexpr;))
+ IF_FEATURE_FIND_PRUNE(  ACTS(prune))
+ IF_FEATURE_FIND_QUIT(   ACTS(quit))
+@@ -956,7 +956,7 @@ ACTF(empty)
+ #if ENABLE_FEATURE_FIND_CONTEXT
+ ACTF(context)
+ {
+-	security_context_t con;
++	char *con;
+ 	int rc;
+ 
+ 	if (G.recurse_flags & ACTION_FOLLOWLINKS) {
+diff --git a/include/libbb.h b/include/libbb.h
+index f22f19d45..f2a9996ec 100644
+--- a/include/libbb.h
++++ b/include/libbb.h
+@@ -1721,10 +1721,10 @@ void getcaps(void *caps) FAST_FUNC;
+ 
+ #if ENABLE_SELINUX
+ extern void renew_current_security_context(void) FAST_FUNC;
+-extern void set_current_security_context(security_context_t sid) FAST_FUNC;
+-extern context_t set_security_context_component(security_context_t cur_context,
++extern void set_current_security_context(char *sid) FAST_FUNC;
++extern context_t set_security_context_component(char *cur_context,
+ 						char *user, char *role, char *type, char *range) FAST_FUNC;
+-extern void setfscreatecon_or_die(security_context_t scontext) FAST_FUNC;
++extern void setfscreatecon_or_die(char *scontext) FAST_FUNC;
+ extern void selinux_preserve_fcontext(int fdesc) FAST_FUNC;
+ #else
+ #define selinux_preserve_fcontext(fdesc) ((void)0)
+diff --git a/libbb/copy_file.c b/libbb/copy_file.c
+index 1327fc9df..6877fe9c6 100644
+--- a/libbb/copy_file.c
++++ b/libbb/copy_file.c
+@@ -118,7 +118,7 @@ int FAST_FUNC copy_file(const char *source, const char *dest, int flags)
+ 
+ #if ENABLE_SELINUX
+ 	if ((flags & FILEUTILS_PRESERVE_SECURITY_CONTEXT) && is_selinux_enabled() > 0) {
+-		security_context_t con;
++		char *con;
+ 		if (lgetfilecon(source, &con) >= 0) {
+ 			if (setfscreatecon(con) < 0) {
+ 				bb_perror_msg("can't set setfscreatecon %s", con);
+@@ -327,7 +327,7 @@ int FAST_FUNC copy_file(const char *source, const char *dest, int flags)
+ 		if ((flags & (FILEUTILS_PRESERVE_SECURITY_CONTEXT|FILEUTILS_SET_SECURITY_CONTEXT))
+ 		 && is_selinux_enabled() > 0
+ 		) {
+-			security_context_t con;
++			char *con;
+ 			if (getfscreatecon(&con) == -1) {
+ 				bb_simple_perror_msg("getfscreatecon");
+ 				return -1;
+diff --git a/libbb/run_shell.c b/libbb/run_shell.c
+index c22bba87b..1c366d069 100644
+--- a/libbb/run_shell.c
++++ b/libbb/run_shell.c
+@@ -33,14 +33,14 @@
+ #endif
+ 
+ #if ENABLE_SELINUX
+-static security_context_t current_sid;
++static char *current_sid;
+ 
+ void FAST_FUNC renew_current_security_context(void)
+ {
+ 	freecon(current_sid);  /* Release old context  */
+ 	getcon(&current_sid);  /* update */
+ }
+-void FAST_FUNC set_current_security_context(security_context_t sid)
++void FAST_FUNC set_current_security_context(char *sid)
+ {
+ 	freecon(current_sid);  /* Release old context  */
+ 	current_sid = sid;
+diff --git a/libbb/selinux_common.c b/libbb/selinux_common.c
+index f917a1c6a..8f00f2db5 100644
+--- a/libbb/selinux_common.c
++++ b/libbb/selinux_common.c
+@@ -9,7 +9,7 @@
+ #include "libbb.h"
+ #include <selinux/context.h>
+ 
+-context_t FAST_FUNC set_security_context_component(security_context_t cur_context,
++context_t FAST_FUNC set_security_context_component(char *cur_context,
+ 			char *user, char *role, char *type, char *range)
+ {
+ 	context_t con = context_new(cur_context);
+@@ -31,7 +31,7 @@ error:
+ 	return NULL;
+ }
+ 
+-void FAST_FUNC setfscreatecon_or_die(security_context_t scontext)
++void FAST_FUNC setfscreatecon_or_die(char *scontext)
+ {
+ 	if (setfscreatecon(scontext) < 0) {
+ 		/* Can be NULL. All known printf implementations
+@@ -43,7 +43,7 @@ void FAST_FUNC setfscreatecon_or_die(security_context_t scontext)
+ 
+ void FAST_FUNC selinux_preserve_fcontext(int fdesc)
+ {
+-	security_context_t context;
++	char *context;
+ 
+ 	if (fgetfilecon(fdesc, &context) < 0) {
+ 		if (errno == ENODATA || errno == ENOTSUP)
+diff --git a/libbb/update_passwd.c b/libbb/update_passwd.c
+index a228075cc..b8a47dc5a 100644
+--- a/libbb/update_passwd.c
++++ b/libbb/update_passwd.c
+@@ -18,7 +18,7 @@
+ #if ENABLE_SELINUX
+ static void check_selinux_update_passwd(const char *username)
+ {
+-	security_context_t seuser;
++	char *seuser;
+ 	char *p;
+ 
+ 	if (getuid() != (uid_t)0 || is_selinux_enabled() == 0)
+diff --git a/loginutils/login.c b/loginutils/login.c
+index 332238181..a30f921dc 100644
+--- a/loginutils/login.c
++++ b/loginutils/login.c
+@@ -181,9 +181,9 @@ static void die_if_nologin(void)
+ 
+ #if ENABLE_SELINUX
+ static void initselinux(char *username, char *full_tty,
+-						security_context_t *user_sid)
++						char **user_sid)
+ {
+-	security_context_t old_tty_sid, new_tty_sid;
++	char *old_tty_sid, new_tty_sid;
+ 
+ 	if (!is_selinux_enabled())
+ 		return;
+@@ -333,7 +333,7 @@ int login_main(int argc UNUSED_PARAM, char **argv)
+ 	char *opt_user = opt_user; /* for compiler */
+ 	char *full_tty;
+ 	char *short_tty;
+-	IF_SELINUX(security_context_t user_sid = NULL;)
++	IF_SELINUX(char *user_sid = NULL;)
+ #if ENABLE_PAM
+ 	int pamret;
+ 	pam_handle_t *pamh;
+diff --git a/selinux/chcon.c b/selinux/chcon.c
+index e1778a36a..dfbeae968 100644
+--- a/selinux/chcon.c
++++ b/selinux/chcon.c
+@@ -67,8 +67,8 @@ static int FAST_FUNC change_filedir_context(struct recursive_state *state UNUSED
+ 		struct stat *stbuf UNUSED_PARAM)
+ {
+ 	context_t context = NULL;
+-	security_context_t file_context = NULL;
+-	security_context_t context_string;
++	char *file_context = NULL;
++	char *context_string;
+ 	int rc = FALSE;
+ 	int status = 0;
+ 
+diff --git a/selinux/matchpathcon.c b/selinux/matchpathcon.c
+index 6945a0295..456209bbd 100644
+--- a/selinux/matchpathcon.c
++++ b/selinux/matchpathcon.c
+@@ -80,7 +80,7 @@ int matchpathcon_main(int argc UNUSED_PARAM, char **argv)
+ 	}
+ 
+ 	while ((path = *argv++) != NULL) {
+-		security_context_t con;
++		char *con;
+ 		int rc;
+ 
+ 		if (!(opts & OPT_VERIFY)) {
+diff --git a/selinux/runcon.c b/selinux/runcon.c
+index bc4fa23e0..3731f7734 100644
+--- a/selinux/runcon.c
++++ b/selinux/runcon.c
+@@ -62,13 +62,13 @@ static context_t runcon_compute_new_context(char *user, char *role, char *type,
+ 			char *command, int compute_trans)
+ {
+ 	context_t con;
+-	security_context_t cur_context;
++	char *cur_context;
+ 
+ 	if (getcon(&cur_context))
+ 		bb_simple_error_msg_and_die("can't get current context");
+ 
+ 	if (compute_trans) {
+-		security_context_t file_context, new_context;
++		char *file_context, new_context;
+ 
+ 		if (getfilecon(command, &file_context) < 0)
+ 			bb_error_msg_and_die("can't retrieve attributes of '%s'",
+diff --git a/selinux/sestatus.c b/selinux/sestatus.c
+index 098a4d189..05c8b1011 100644
+--- a/selinux/sestatus.c
++++ b/selinux/sestatus.c
+@@ -92,7 +92,7 @@ static void read_config(char **pc, int npc, char **fc, int nfc)
+ 
+ static void display_verbose(void)
+ {
+-	security_context_t con, _con;
++	char *con, _con;
+ 	char *fc[50], *pc[50], *cterm;
+ 	pid_t *pidList;
+ 	int i;
+diff --git a/util-linux/mkswap.c b/util-linux/mkswap.c
+index 8fe5d0293..fab094274 100644
+--- a/util-linux/mkswap.c
++++ b/util-linux/mkswap.c
+@@ -49,8 +49,8 @@ static void mkswap_selinux_setcontext(int fd, const char *path)
+ 
+ 	xfstat(fd, &stbuf, path);
+ 	if (S_ISREG(stbuf.st_mode)) {
+-		security_context_t newcon;
+-		security_context_t oldcon = NULL;
++		char *newcon;
++		char *oldcon = NULL;
+ 		context_t context;
+ 
+ 		if (fgetfilecon(fd, &oldcon) < 0) {

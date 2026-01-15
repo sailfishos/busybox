@@ -16,6 +16,7 @@ Patch4:  0005-ash-job-option-to-restore-term-io-after-job-is-stopp.patch
 Patch5:  0006-ash-Write-history-on-SIGHUP.patch
 Patch6:  0007-shell-fix-SIGWINCH-and-SIGCHLD-in-hush-interrupting-.patch
 Patch7:  0008-ash-disable-sleep-as-builtin-closes-15619.patch
+Patch8:  0009-Don-t-use-deprecated-security_context_t.patch
 
 URL: https://github.com/sailfishos/busybox
 BuildRequires: glibc-static
