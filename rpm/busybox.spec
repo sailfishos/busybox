@@ -225,6 +225,8 @@ Obsoletes: psmisc < 22.13+git1
 %autosetup -p1 -n %{name}-%{version}/upstream
 
 %build
+# BusyBox uses a deprecated SELinux API
+export CFLAGS="$CFLAGS -Wno-deprecated-declarations"
 # TODO: This config should be synced with the dynamic config at some point
 # currently the features differ quite a bit
 cp %{SOURCE2} .config
