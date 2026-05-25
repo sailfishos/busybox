@@ -221,6 +221,14 @@ Obsoletes: psmisc < 22.13+git1
 %description symlinks-psmisc
 %{summary} as symlinks.
 
+%package symlinks-i2c-tools
+Requires: %{name} = %{version}-%{release}
+Summary: Busybox replacement for i2c-tools
+Provides: i2c-tools
+
+%description symlinks-i2c-tools
+%{summary} as symlinks.
+
 %prep
 %autosetup -p1 -n %{name}-%{version}/upstream
 
@@ -584,3 +592,10 @@ rm -f %{buildroot}/bin/pidof
 %{_bindir}/pidof
 %{_bindir}/killall
 %{_bindir}/pstree
+
+%files symlinks-i2c-tools
+%{_sbindir}/i2cdetect
+%{_sbindir}/i2cdump
+%{_sbindir}/i2cget
+%{_sbindir}/i2cset
+%{_sbindir}/i2ctransfer
