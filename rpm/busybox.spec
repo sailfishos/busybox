@@ -343,7 +343,6 @@ install -m 644 -t %{buildroot}/%{_docdir}/%{name}-%{version} \
 rm -f %{buildroot}/bin/pidof
 
 %files
-%defattr(-,root,root,-)
 %license LICENSE
 /bin/busybox
 %{_bindir}/busybox
@@ -359,16 +358,13 @@ rm -f %{buildroot}/bin/pidof
 %{_sbindir}/arping
 
 %files static
-%defattr(-,root,root,-)
 /bin/busybox-static
 %{_bindir}/busybox-static
 
 %files doc
-%defattr(-,root,root,-)
 %doc %{_docdir}/%{name}-%{version}
 
 %files symlinks-bash
-%defattr(-,root,root,-)
 /bin/bash
 /bin/sh
 %{_bindir}/bash
@@ -376,14 +372,12 @@ rm -f %{buildroot}/bin/pidof
 %{_sysconfdir}/profile.d/set_ps1.sh
 
 %files symlinks-bc
-%defattr(-,root,root,-)
 /bin/bc
 /bin/dc
 %{_bindir}/bc
 %{_bindir}/dc
 
 %files symlinks-coreutils
-%defattr(-,root,root,-)
 /bin/basename
 /bin/cat
 /bin/chgrp
@@ -502,14 +496,12 @@ rm -f %{buildroot}/bin/pidof
 %{_sbindir}/chroot
 
 %files symlinks-dosfstools
-%defattr(-,root,root,-)
 /sbin/mkdosfs
 %{_sbindir}/mkdosfs
 /sbin/mkfs.vfat
 %{_sbindir}/mkfs.vfat
 
 %files symlinks-gzip
-%defattr(-,root,root,-)
 /bin/gunzip
 %{_bindir}/gunzip
 /bin/gzip
@@ -518,34 +510,28 @@ rm -f %{buildroot}/bin/pidof
 %{_bindir}/zcat
 
 %files symlinks-dhcp
-%defattr(-,root,root,-)
 %{_sbindir}/udhcpc
 %{_sbindir}/udhcpd
 %{_unitdir}/udhcpd.service
 
 %files symlinks-diffutils
-%defattr(-,root,root,-)
 %{_bindir}/diff
 %{_bindir}/cmp
 
 %files symlinks-findutils
-%defattr(-,root,root,-)
 /bin/find
 %{_bindir}/find
 %{_bindir}/xargs
 
 %files symlinks-grep
-%defattr(-,root,root,-)
 /bin/{,e,f}grep
 %{_bindir}/{,e,f}grep
 
 %files symlinks-cpio
-%defattr(-,root,root,-)
 /bin/cpio
 %{_bindir}/cpio
 
 %files symlinks-procps
-%defattr(-,root,root,-)
 /bin/ps
 /sbin/sysctl
 %{_bindir}/ps
@@ -561,31 +547,25 @@ rm -f %{buildroot}/bin/pidof
 %{_bindir}/w
 
 %files symlinks-sed
-%defattr(-,root,root,-)
 /bin/sed
 %{_bindir}/sed
 
 %files symlinks-tar
-%defattr(-,root,root,-)
 /bin/tar
 %{_bindir}/tar
 
 %files symlinks-vi
-%defattr(-,root,root,-)
 /bin/vi
 %{_bindir}/vi
 
 %files symlinks-which
-%defattr(-,root,root,-)
 %{_bindir}/which
 
 %files symlinks-console-tools
-%defattr(-,root,root,-)
 %{_bindir}/clear
 %{_bindir}/reset
 
 %files symlinks-psmisc
-%defattr(-,root,root,-)
 /sbin/fuser
 /sbin/pidof
 %{_bindir}/fuser
