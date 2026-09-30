@@ -1,38 +1,7 @@
 Summary: Single binary providing simplified versions of system commands
 Name: busybox
-Version: 1.38.0
-Release: 1
-License: GPLv2
-Source0: http://www.busybox.net/downloads/%{name}-%{version}.tar.bz2
-Source1: rpm/udhcpd.service
-Source2: busybox-static.config
-Source3: busybox-sailfish.config
-Source4: set_ps1.sh
-Patch0:  0001-Copy-extended-attributes-if-p-flag-is-provided-to-cp.patch
-Patch1:  0002-applets-Busybox-in-usr-bin-instead-of-bin.patch
-Patch2:  0003-Align-watch-with-what-is-in-procps-ng.patch
-Patch3:  0004-ash-Load-ENV-file-also-if-SSH_CLIENT-SSH2_CLIENT-is-.patch
-Patch4:  0005-ash-job-option-to-restore-term-io-after-job-is-stopp.patch
-Patch5:  0006-ash-Write-history-on-SIGHUP.patch
-Patch6:  0007-networking-Fix-build-without-cbq-support.patch
 
-URL: https://github.com/sailfishos/busybox
-BuildRequires: glibc-static
-BuildRequires: libselinux-static libsepol-static
-BuildRequires: pcre2-static
-BuildRequires: pkgconfig(systemd)
-BuildRequires: sed
-
-Obsoletes: time <= 1.7
-Provides: time > 1.7
-
-# Providing only part of iputils, but should be enough for us.
-Obsoletes: iputils <= 20101006
-Provides: iputils > 20101006
-
-Obsoletes: busybox-symlinks-cpio <= 1.33.1+git2
-
-%define debug_package %{nil}
+%include rpm/busybox-common.inc
 
 %description
 Busybox is a single binary which includes versions of a large number
@@ -44,16 +13,6 @@ Requires: %{name} = %{version}-%{release}
 
 %description doc
 Busybox user guide.
-
-%package static
-Summary: Statically linked version of busybox
-
-%description static
-Busybox is a single binary which includes versions of a large number
-of system commands, including a shell. This package can be very
-useful for recovering from certain types of system failures,
-particularly those involving broken shared libraries. This package
-provides a statically linked version of Busybox.
 
 %package symlinks-bash
 Requires: %{name} = %{version}-%{release}
@@ -231,25 +190,16 @@ Provides: i2c-tools
 %prep
 %autosetup -p1 -n %{name}-%{version}/upstream
 
+%conf
+# Build dynamic version
+cp %{SOURCE3} .config
+yes "" | make oldconfig
+
 %build
 # BusyBox uses a deprecated SELinux API
 export CFLAGS="$CFLAGS -Wno-deprecated-declarations"
-# TODO: This config should be synced with the dynamic config at some point
-# currently the features differ quite a bit
-cp %{SOURCE2} .config
-yes "" | make oldconfig
-%make_build CRYPT_AVAILABLE=n
-cp busybox busybox-static
-
-# clean any leftovers from static build
-make clean
-make distclean
-
-# Build dynamic version
-cp %{SOURCE3} .config
-
-yes "" | make oldconfig
 %make_build
+
 make busybox.links
 # /bin links are legacy, use /usr/bin whenever you can
 cat >> busybox.links << EOF
@@ -333,8 +283,6 @@ rm -f %{buildroot}/bin/base64
 
 install -m 644 -D %{SOURCE4} %{buildroot}/%{_sysconfdir}/profile.d/set_ps1.sh
 
-install -m 755 busybox-static %{buildroot}/usr/bin/busybox-static
-ln -s ../usr/bin/busybox-static %{buildroot}/bin/busybox-static
 mkdir -p %{buildroot}/%{_docdir}/%{name}-%{version}
 install -m 644 -t %{buildroot}/%{_docdir}/%{name}-%{version} \
         docs/BusyBox.html docs/BusyBox.txt
@@ -355,10 +303,6 @@ rm -f %{buildroot}/bin/pidof
 %{_bindir}/traceroute
 %{_bindir}/traceroute6
 %{_sbindir}/arping
-
-%files static
-/bin/busybox-static
-%{_bindir}/busybox-static
 
 %files doc
 %doc %{_docdir}/%{name}-%{version}
