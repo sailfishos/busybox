@@ -1,6 +1,6 @@
 Summary: Single binary providing simplified versions of system commands
 Name: busybox
-Version: 1.36.1
+Version: 1.38.0
 Release: 1
 License: GPLv2
 Source0: http://www.busybox.net/downloads/%{name}-%{version}.tar.bz2
@@ -14,9 +14,7 @@ Patch2:  0003-Align-watch-with-what-is-in-procps-ng.patch
 Patch3:  0004-ash-Load-ENV-file-also-if-SSH_CLIENT-SSH2_CLIENT-is-.patch
 Patch4:  0005-ash-job-option-to-restore-term-io-after-job-is-stopp.patch
 Patch5:  0006-ash-Write-history-on-SIGHUP.patch
-Patch6:  0007-shell-fix-SIGWINCH-and-SIGCHLD-in-hush-interrupting-.patch
-Patch7:  0008-ash-disable-sleep-as-builtin-closes-15619.patch
-Patch8:  0009-networking-Fix-build-without-cbq-support.patch
+Patch6:  0007-networking-Fix-build-without-cbq-support.patch
 
 URL: https://github.com/sailfishos/busybox
 BuildRequires: glibc-static
@@ -28,7 +26,7 @@ BuildRequires: sed
 Obsoletes: time <= 1.7
 Provides: time > 1.7
 
-# Providing only part of iputils, but should be enough for us. 
+# Providing only part of iputils, but should be enough for us.
 Obsoletes: iputils <= 20101006
 Provides: iputils > 20101006
 
@@ -467,6 +465,7 @@ rm -f %{buildroot}/bin/pidof
 %{_bindir}/seq
 %{_bindir}/sha1sum
 %{_bindir}/sha256sum
+%{_bindir}/sha384sum
 %{_bindir}/sha512sum
 %{_bindir}/shred
 %{_bindir}/shuf
